@@ -6,15 +6,12 @@ import {loginStyles} from './style';
 
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import showToast from '../../components/Toast';
-import {FormValuesType} from '../registration';
-import {setCurrentUser} from '../../redux/reducers/signupReducer';
+import {loginReducer} from '../../redux/reducers/signupReducer';
 import CustomInput from '../../components/CustomInput';
-import {loginUser} from '../../services/apis/login';
 
 const LoginScreen = ({navigation}: any) => {
-  const {users, currentUser} = useAppSelector(state => state.users);
-  const [loggedIn, setloggedIn] = useState(false);
-  const [userInfo, setuserInfo] = useState([]);
+  const {loginSuccess} = useAppSelector(state => state.users);
+
   const [email, setemail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useAppDispatch();
@@ -24,16 +21,15 @@ const LoginScreen = ({navigation}: any) => {
       username: 'testuser',
       password: 'testpassword',
     };
-    const result: any = await loginUser(payload);
-    console.log(result, 'resultvalue');
-    if (result.success) {
+    dispatch(loginReducer(payload));
+    if (loginSuccess) {
       showToast('Login Success');
       navigation.navigate('Home');
-      dispatch(setCurrentUser(result.username));
     } else {
       showToast('Invalid credentials');
     }
   };
+  console.log(loginSuccess, 'loginscess');
 
   const onSignUp = () => {
     navigation.navigate('Registration');

@@ -12,12 +12,16 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import groupSlice from './reducers/groupsReducer';
 import historyList from './reducers/historyReducer';
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from './saga';
 
 const reducers = combineReducers({
   users: counterSlice,
   history: historyList,
   groups: groupSlice,
 });
+
+const sagaMiddleware = createSagaMiddleware();
 
 const persistConfig = {
   key: 'root',
@@ -32,8 +36,10 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(sagaMiddleware),
 });
+
+sagaMiddleware.run(rootSaga);
 
 export default store;
 
