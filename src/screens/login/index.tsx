@@ -2,8 +2,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, ImageBackground} from 'react-native';
 
-
-
 import {loginStyles} from './style';
 
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
@@ -11,6 +9,7 @@ import showToast from '../../components/Toast';
 import {FormValuesType} from '../registration';
 import {setCurrentUser} from '../../redux/reducers/signupReducer';
 import CustomInput from '../../components/CustomInput';
+import {loginUser} from '../../services/apis/login';
 
 const LoginScreen = ({navigation}: any) => {
   const {users, currentUser} = useAppSelector(state => state.users);
@@ -20,33 +19,17 @@ const LoginScreen = ({navigation}: any) => {
   const [password, setPassword] = useState('');
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    autoLogin();
-  }, []);
-
-
-
- 
-
-  const autoLogin = () => {
-    if (currentUser.email) {
+  const handleSignIn = async () => {
+    const payload = {
+      username: 'testuser',
+      password: 'testpassword',
+    };
+    const result: any = await loginUser(payload);
+    console.log(result, 'resultvalue');
+    if (result.success) {
       showToast('Login Success');
-      dispatch(setCurrentUser(currentUser));
       navigation.navigate('Home');
-      return;
-    }
-  };
-
-  const handleSignIn = () => {
-    const validUser = users.find(
-      (user: FormValuesType) =>
-        user.email === email && user.password === password,
-    );
-
-    navigation.navigate('Home');
-    if (validUser) {
-      showToast('Login Success');
-      dispatch(setCurrentUser(validUser));
+      dispatch(setCurrentUser(result.username));
     } else {
       showToast('Invalid credentials');
     }
@@ -80,7 +63,7 @@ const LoginScreen = ({navigation}: any) => {
             onSubmitEdit={handleSignIn}
             secureTextEntry={true}
           />
-        
+
           <TouchableOpacity style={loginStyles.button} onPress={handleSignIn}>
             <Text style={loginStyles.buttonText}>Sign In</Text>
           </TouchableOpacity>

@@ -5,7 +5,7 @@ import {PURGE} from 'redux-persist';
 
 export interface stateType {
   users: FormValuesType[];
-  currentUser: FormValuesType;
+  currentUser: any;
 }
 
 const initialState: stateType = {

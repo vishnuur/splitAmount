@@ -6,7 +6,7 @@ import {TouchableOpacity, View} from 'react-native';
 interface modalInterface {
   visible: boolean;
   handleModalOutsidePress: () => void;
-  onSave: (value: string) => void;
+  onSave: (groupName: string, userName: string) => void;
 }
 const ModalComponent = ({
   handleModalOutsidePress,
@@ -14,6 +14,7 @@ const ModalComponent = ({
   onSave,
 }: modalInterface) => {
   const [groupName, setgroupName] = useState('');
+  const [username, setusername] = useState('');
   return (
     <Modal
       visible={visible}
@@ -23,11 +24,14 @@ const ModalComponent = ({
         <TextInput
           placeholder="Group name"
           onChangeText={text => setgroupName(text)}></TextInput>
+        <TextInput
+          placeholder="User name"
+          onChangeText={text => setusername(text)}></TextInput>
         {/*<TouchableOpacity>Save</TouchableOpacity>*/}
         <Button
           icon="camera"
           mode="contained"
-          onPress={() => onSave(groupName)}
+          onPress={() => onSave(groupName, username)}
           disabled={groupName === ''}>
           Save
         </Button>

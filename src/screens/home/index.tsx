@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   Image,
@@ -17,8 +17,9 @@ import {FormValuesType} from '../registration';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import ModalComponent from './components/modal';
 import {FAB} from 'react-native-paper';
-import {onSaveGroup} from '../../redux/reducers/groupsReducer';
+import {onSaveGroup, saveGroupData} from '../../redux/reducers/groupsReducer';
 import {clearAddedData} from '../../redux/reducers/historyReducer';
+import {listGroups} from '../../services/apis/groups';
 
 const HomeScreen = ({navigation}: any) => {
   const {currentUser, users} = useAppSelector(state => state.users);
@@ -29,24 +30,39 @@ const HomeScreen = ({navigation}: any) => {
 
   const dispatch = useAppDispatch();
 
-  const showModal = () => setVisibleModal(true);
+  const showModal = () => {
+    setVisibleModal(true);
+  };
   const hideModal = () => setVisibleModal(false);
 
   const onPressUser = (data: FormValuesType) => {
     navigation.navigate('UserDetails', data);
   };
+  // console.log(listGroups(), 'groupsgroups');
+  const getListOfGroups = async () => {
+    const result = await listGroups();
+    dispatch(saveGroupData(result));
+  };
+  useEffect(() => {
+    getListOfGroups();
+  }, [navigation]);
 
   const onPressImage = (data: FormValuesType | any) => {
     setselectedImage(data.imageUrl);
     setVisible(true);
   };
+  console.log(groups, 'currentUsercurrentUser');
 
   //  const handleModalOutsidePress = () => {
   //    setVisible(false);
   //  };
 
-  const saveGroupNameFn = (value: string) => {
-    dispatch(onSaveGroup(value));
+  const saveGroupNameFn = (grpupName: string, userName: string) => {
+    const payload = {
+      title: grpupName,
+      usernames: [userName],
+    };
+    dispatch(onSaveGroup(payload));
     hideModal();
   };
 
@@ -67,7 +83,7 @@ const HomeScreen = ({navigation}: any) => {
             />
           </TouchableOpacity>*/}
           <View style={homeStyle.datawrap}>
-            <Text style={homeStyle.name}>{item}</Text>
+            <Text style={homeStyle.name}>{item.title}</Text>
           </View>
         </View>
         <Text style={homeStyle.registertime}>Tap to view more</Text>
@@ -89,9 +105,7 @@ const HomeScreen = ({navigation}: any) => {
           <ImageBackground
             source={require('../../assets/Images/background.jpg')}
             style={homeStyle.backgroundImage}>
-            <Text style={homeStyle.heading}>
-              Hi, {currentUser?.first_name} {currentUser?.last_name}
-            </Text>
+            <Text style={homeStyle.heading}>Hi, {currentUser?.username}</Text>
           </ImageBackground>
         </View>
         <View style={homeStyle.detailWrap}>
