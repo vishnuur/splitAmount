@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const baseURL = 'http://192.168.29.70:3000';
@@ -16,13 +17,13 @@ const base = async (options: any, token?: any) => {
   }
 };
 
-export const get = (url: string, params?: any) => {
+export const get = (url: string, params?: any, token?: any) => {
   const options = {
     method: 'get',
     url,
     params,
   };
-  return base(options);
+  return base(options, token);
 };
 export const post = (url: string, data: any) => {
   const options = {

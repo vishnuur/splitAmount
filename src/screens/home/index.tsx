@@ -17,12 +17,11 @@ import {FormValuesType} from '../registration';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import ModalComponent from './components/modal';
 import {FAB} from 'react-native-paper';
-import {onSaveGroup, saveGroupData} from '../../redux/reducers/groupsReducer';
+import {getGroups} from '../../redux/reducers/groupsReducer';
 import {clearAddedData} from '../../redux/reducers/historyReducer';
-import {listGroups} from '../../services/apis/groups';
 
 const HomeScreen = ({navigation}: any) => {
-  const {currentUser, users} = useAppSelector(state => state.users);
+  const {currentUser, token} = useAppSelector(state => state.users);
   const {groups} = useAppSelector(state => state.groups);
   const [visible, setVisible] = useState(false);
   const [selectedImage, setselectedImage] = useState('');
@@ -39,13 +38,9 @@ const HomeScreen = ({navigation}: any) => {
     console.log(data, 'data');
     // navigation.navigate('UserDetails', data);
   };
-  // console.log(listGroups(), 'groupsgroups');
-  const getListOfGroups = async () => {
-    const result = await listGroups();
-    dispatch(saveGroupData(result));
-  };
+
   useEffect(() => {
-    getListOfGroups();
+    dispatch(getGroups(null));
   }, [navigation]);
 
   const onPressImage = (data: FormValuesType | any) => {
@@ -62,7 +57,6 @@ const HomeScreen = ({navigation}: any) => {
       title: grpupName,
       usernames: [userName],
     };
-    dispatch(onSaveGroup(payload));
     hideModal();
   };
 

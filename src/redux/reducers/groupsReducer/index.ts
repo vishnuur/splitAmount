@@ -10,10 +10,10 @@ const initialState: stateType = {
 };
 
 export const groupSlice = createSlice({
-  name: 'counter',
+  name: 'groups',
   initialState,
   reducers: {
-    onSaveGroup: (state, action) => {
+    getGroups: (state, action) => {
       console.log(state.groups, 'action', action.payload);
       createGroup(action.payload);
     },
@@ -24,6 +24,6 @@ export const groupSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {onSaveGroup, saveGroupData} = groupSlice.actions;
+export const {getGroups, saveGroupData} = groupSlice.actions;
 
 export default groupSlice.reducer;
