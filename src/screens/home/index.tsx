@@ -72,7 +72,7 @@ const HomeScreen = ({navigation}: any) => {
         onPressUser(item);
         dispatch(clearAddedData(''));
       }}
-      key={item}>
+      key={item._id}>
       <View style={homeStyle.section}>
         <View style={homeStyle.leftpart}>
           {/*<TouchableOpacity onPress={() => onPressImage(item)}>

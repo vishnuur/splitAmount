@@ -18,8 +18,8 @@ const LoginScreen = ({navigation}: any) => {
 
   const handleSignIn = async () => {
     const payload = {
-      username: 'testuser',
-      password: 'testpassword',
+      username: email,
+      password: password,
     };
     dispatch(loginReducer(payload));
     if (loginSuccess) {

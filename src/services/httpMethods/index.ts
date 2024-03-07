@@ -3,8 +3,21 @@ import axios from 'axios';
 
 const baseURL = 'http://192.168.29.70:3000';
 
-const base = async (options: any, token?: any) => {
+const getToken = async () => {
   try {
+    const token = await AsyncStorage.getItem('token');
+    return token;
+  } catch (error) {
+    console.error('Error getting token from AsyncStorage:', error);
+    return null;
+  }
+};
+
+const base = async (options: any) => {
+  try {
+    const token = await getToken();
+    console.log(token, 'tokkennn');
+
     return axios({
       baseURL,
       ...options,
@@ -17,13 +30,13 @@ const base = async (options: any, token?: any) => {
   }
 };
 
-export const get = (url: string, params?: any, token?: any) => {
+export const get = (url: string, params?: any) => {
   const options = {
     method: 'get',
     url,
     params,
   };
-  return base(options, token);
+  return base(options);
 };
 export const post = (url: string, data: any) => {
   const options = {
