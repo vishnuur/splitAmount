@@ -29,7 +29,7 @@ const LoginScreen = ({navigation}: any) => {
       showToast('Invalid credentials');
     }
   };
-  console.log(loginSuccess, 'loginscess');
+  console.log(loginSuccess, 'loginscess', typeof loginSuccess);
 
   const onSignUp = () => {
     navigation.navigate('Registration');

@@ -15,22 +15,7 @@ import imagePaths from '../constants/images';
 const Stack = createStackNavigator();
 
 const StackNavigator = ({navigation}: any) => (
-  <Stack.Navigator
-    initialRouteName="Login"
-    screenOptions={{headerShown: false}}>
-    <Stack.Screen name="Login" component={LoginScreen} />
-    <Stack.Screen
-      name="Registration"
-      component={RegistrationScreen}
-      options={{
-        headerShown: true,
-        headerStyle: {
-          backgroundColor: 'transparent',
-        },
-        headerTransparent: true,
-        headerTintColor: 'white',
-      }}
-    />
+  <Stack.Navigator initialRouteName="Home" screenOptions={{headerShown: false}}>
     <Stack.Screen
       name="Home"
       component={HomeScreen}
@@ -128,6 +113,25 @@ const StackNavigator = ({navigation}: any) => (
     />
   </Stack.Navigator>
 );
+const AuthNavigator = ({navigation}: any) => (
+  <Stack.Navigator
+    initialRouteName="Login"
+    screenOptions={{headerShown: false}}>
+    <Stack.Screen name="Login" component={LoginScreen} />
+    <Stack.Screen
+      name="Registration"
+      component={RegistrationScreen}
+      options={{
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: 'transparent',
+        },
+        headerTransparent: true,
+        headerTintColor: 'white',
+      }}
+    />
+  </Stack.Navigator>
+);
 const styles = StyleSheet.create({
   headerImage: {
     width: 30,
@@ -137,4 +141,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default StackNavigator;
+export {StackNavigator, AuthNavigator};

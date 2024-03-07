@@ -19,7 +19,7 @@ const initialState: stateType = {
     password: '',
     confirmPassword: '',
   },
-  token: '',
+  token: null,
   loginSuccess: false,
 };
 
@@ -39,7 +39,6 @@ export const counterSlice = createSlice({
       console.log('sdfsd', action.payload);
     },
     saveLoginDetails: (state, action) => {
-      console.log(action.payload, 'states');
       state.loginSuccess = action.payload.success;
       state.token = action.payload.token;
       state.currentUser = action.payload.username;

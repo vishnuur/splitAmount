@@ -4,8 +4,8 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {styles} from './style';
-import {setCurrentUser} from '../../redux/reducers/signupReducer';
-import {persistor} from '../../..';
+import {saveToken} from '../../redux/reducers/signupReducer';
+
 import CustomIcon from '../CustomIcons';
 
 const DrawerMenu = ({navigation}: any) => {
@@ -13,9 +13,8 @@ const DrawerMenu = ({navigation}: any) => {
   const dispatch = useAppDispatch();
 
   const onLogingOut = () => {
-    persistor.purge();
-    navigation.navigate('Login');
-    dispatch(setCurrentUser({}));
+    dispatch(saveToken(null));
+    navigation.closeDrawer();
   };
 
   const closeDrawer = () => {

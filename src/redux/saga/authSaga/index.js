@@ -4,17 +4,19 @@ import {loginReducer, saveLoginDetails} from '../../reducers/signupReducer';
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* loginUserSaga(action) {
+  let result;
   try {
-    const user = yield call(loginUser, action.payload);
+    result = yield call(loginUser, action.payload);
     console.log(user, 'usersaga');
-    yield put({type: saveLoginDetails, payload: user});
   } catch (e) {
     yield put({type: 'USER_FETCH_FAILED', message: e.message});
+  } finally {
+    yield put({type: 'counter/saveLoginDetails', payload: result});
   }
 }
 
 function* mySaga() {
-  yield takeEvery(loginReducer, loginUserSaga);
+  yield takeEvery('counter/loginReducer', loginUserSaga);
 }
 
 export default mySaga;

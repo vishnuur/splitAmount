@@ -36,7 +36,8 @@ const HomeScreen = ({navigation}: any) => {
   const hideModal = () => setVisibleModal(false);
 
   const onPressUser = (data: FormValuesType) => {
-    navigation.navigate('UserDetails', data);
+    console.log(data, 'data');
+    // navigation.navigate('UserDetails', data);
   };
   // console.log(listGroups(), 'groupsgroups');
   const getListOfGroups = async () => {
@@ -51,7 +52,6 @@ const HomeScreen = ({navigation}: any) => {
     setselectedImage(data.imageUrl);
     setVisible(true);
   };
-  console.log(groups, 'currentUsercurrentUser');
 
   //  const handleModalOutsidePress = () => {
   //    setVisible(false);
@@ -105,7 +105,7 @@ const HomeScreen = ({navigation}: any) => {
           <ImageBackground
             source={require('../../assets/Images/background.jpg')}
             style={homeStyle.backgroundImage}>
-            <Text style={homeStyle.heading}>Hi, {currentUser?.username}</Text>
+            <Text style={homeStyle.heading}>Hi, {currentUser}</Text>
           </ImageBackground>
         </View>
         <View style={homeStyle.detailWrap}>

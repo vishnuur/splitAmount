@@ -41,7 +41,6 @@ interface editInterface {
 const UserDetails = ({route}: any) => {
   const dispatch = useAppDispatch();
   const {history} = useAppSelector(state => state.history);
-  console.log(history, 'historyhistory');
   const data = route.params;
   const navigation = useNavigation();
   const currentUser = {name: 'vishnu'};
