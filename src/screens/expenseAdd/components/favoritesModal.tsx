@@ -56,7 +56,6 @@ const FavoritesModal = ({
   };
 
   const onPayedBy = (value: any) => {
-    console.log(value, 'value');
     if (value === 1) {
       setpayedUserValue(peopleDummyData[0].value);
     } else {
@@ -79,7 +78,6 @@ const FavoritesModal = ({
 
   const onSubmit = () => {
     const updatedValues = updatePercentages(moneySplitted);
-    console.log(updatedValues, 'valesupdated');
     setmoneySplit({...updatedValues, payedBy: payedUser});
     setVisible(false);
   };

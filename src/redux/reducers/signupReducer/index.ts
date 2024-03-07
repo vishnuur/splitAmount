@@ -36,7 +36,7 @@ export const counterSlice = createSlice({
       state.users = [...state.users, newUser];
     },
     loginReducer: (state, action) => {
-      console.log('sdfsd', action.payload);
+      console.log(action.payload);
     },
     saveLoginDetails: (state, action) => {
       state.loginSuccess = action.payload.success;

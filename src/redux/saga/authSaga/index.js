@@ -7,7 +7,6 @@ function* loginUserSaga(action) {
   let result;
   try {
     result = yield call(loginUser, action.payload);
-    console.log(user, 'usersaga');
   } catch (e) {
     yield put({type: 'USER_FETCH_FAILED', message: e.message});
   } finally {

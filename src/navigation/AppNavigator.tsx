@@ -16,7 +16,6 @@ const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
   const {token} = useAppSelector(state => state.users);
-  console.log(token, 'token');
   return (
     <Drawer.Navigator
       drawerContent={props => <DrawerMenu {...props} />}

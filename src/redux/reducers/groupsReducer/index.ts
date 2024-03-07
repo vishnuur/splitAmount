@@ -14,10 +14,10 @@ export const groupSlice = createSlice({
   initialState,
   reducers: {
     getGroups: (state, action) => {
-      console.log(state.groups, 'action', action.payload);
-      createGroup(action.payload);
+      console.log(state.groups);
     },
     saveGroupData: (state, action) => {
+      createGroup(action.payload);
       state.groups = action.payload;
     },
   },

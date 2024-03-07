@@ -17,8 +17,9 @@ import {FormValuesType} from '../registration';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import ModalComponent from './components/modal';
 import {FAB} from 'react-native-paper';
-import {getGroups} from '../../redux/reducers/groupsReducer';
+import {getGroups, saveGroupData} from '../../redux/reducers/groupsReducer';
 import {clearAddedData} from '../../redux/reducers/historyReducer';
+import {listGroups} from '../../services/apis/groups';
 
 const HomeScreen = ({navigation}: any) => {
   const {currentUser, token} = useAppSelector(state => state.users);
@@ -34,9 +35,12 @@ const HomeScreen = ({navigation}: any) => {
   };
   const hideModal = () => setVisibleModal(false);
 
-  const onPressUser = (data: FormValuesType) => {
-    console.log(data, 'data');
-    // navigation.navigate('UserDetails', data);
+  const onPressUser = (data: any) => {
+    const payload = {
+      title: data.title,
+      id: data._id,
+    };
+    navigation.navigate('UserDetails', payload);
   };
 
   useEffect(() => {
@@ -57,10 +61,11 @@ const HomeScreen = ({navigation}: any) => {
       title: grpupName,
       usernames: [userName],
     };
+    dispatch(saveGroupData(payload));
     hideModal();
+    dispatch(getGroups(null));
   };
 
-  //  console.log('groups', groups);
   const renderItem = ({item}: FormValuesType | any) => (
     <Pressable
       onPress={() => {

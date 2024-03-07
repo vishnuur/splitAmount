@@ -35,7 +35,6 @@ const MyComponent: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
 
-  console.log(values, 'valuesvalues');
   const handleInputChange = (fieldName: keyof FormData, value: string) => {
     setFormData({
       ...formData,
@@ -72,7 +71,6 @@ const MyComponent: React.FC = () => {
     }
     navigation.goBack();
   };
-  console.log(moneySplit, 'moneysplit');
   const getCalculatedSplit = () => {
     let result = 0;
     result = parseInt(formData.amount) / peopleDummyData.length;

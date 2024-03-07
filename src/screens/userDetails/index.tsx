@@ -20,7 +20,7 @@ import {FormValuesType} from '../registration';
 import CustomIcon from '../../components/customIcons';
 import {Button, FAB} from 'react-native-paper';
 import moment from 'moment';
-import {clearAddedData} from '../../redux/reducers/historyReducer';
+import {clearAddedData, getHistory} from '../../redux/reducers/historyReducer';
 import BottomModal from '../../components/BottomModal/index';
 import {
   BottomSheetModal,
@@ -45,13 +45,8 @@ const UserDetails = ({route}: any) => {
   const navigation = useNavigation();
   const currentUser = {name: 'vishnu'};
 
-  const [formValues, setFormValues] = useState<editInterface>({
-    first_name: '',
-    last_name: '',
-  });
-
   useEffect(() => {
-    setFormValues({first_name: data, last_name: data});
+    dispatch(getHistory(data.id));
   }, [data]);
 
   const formatSplitText = (value: number) => {

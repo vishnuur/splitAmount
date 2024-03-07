@@ -64,7 +64,7 @@ const StackNavigator = ({navigation}: any) => (
                 style={styles.headerImage}
               />
               <Text style={{color: 'white', fontSize: 18}}>
-                {(route.params as any) || 'User name'}
+                {(route.params as any).title || 'User name'}
               </Text>
             </View>
           ),
