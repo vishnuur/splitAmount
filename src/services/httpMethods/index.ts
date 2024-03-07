@@ -1,22 +1,11 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import {getAsyncStorage} from '../../utils/asyncStorageUtils';
 
 const baseURL = 'http://192.168.29.70:3000';
 
-const getToken = async () => {
-  try {
-    const token = await AsyncStorage.getItem('token');
-    return token;
-  } catch (error) {
-    console.error('Error getting token from AsyncStorage:', error);
-    return null;
-  }
-};
-
 const base = async (options: any) => {
   try {
-    const token = await getToken();
-    console.log(token, 'tokkennn');
+    const token = await getAsyncStorage('token');
 
     return axios({
       baseURL,

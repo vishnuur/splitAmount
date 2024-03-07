@@ -7,6 +7,7 @@ import {styles} from './style';
 import {saveToken} from '../../redux/reducers/signupReducer';
 
 import CustomIcon from '../CustomIcons';
+import {clearAsyncStorage} from '../../utils/asyncStorageUtils';
 
 const DrawerMenu = ({navigation}: any) => {
   const {currentUser} = useAppSelector(state => state.users);
@@ -14,6 +15,7 @@ const DrawerMenu = ({navigation}: any) => {
 
   const onLogingOut = () => {
     dispatch(saveToken(null));
+    clearAsyncStorage();
     navigation.closeDrawer();
   };
 

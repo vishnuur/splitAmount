@@ -1,5 +1,4 @@
 import {call, put, takeEvery, takeLatest} from 'redux-saga/effects';
-import {listGroups} from '../../../services/apis/groups';
 import {historyList} from '../../../services/apis/history';
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
