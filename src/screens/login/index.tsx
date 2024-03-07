@@ -24,7 +24,6 @@ const LoginScreen = ({navigation}: any) => {
     dispatch(loginReducer(payload));
     if (loginSuccess) {
       showToast('Login Success');
-      navigation.navigate('Home');
     } else {
       showToast('Invalid credentials');
     }
