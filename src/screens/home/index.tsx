@@ -4,6 +4,8 @@ import {
   Image,
   ImageBackground,
   Pressable,
+  RefreshControl,
+  ScrollView,
   Text,
   TouchableOpacity,
   View,
@@ -20,6 +22,7 @@ import {FAB} from 'react-native-paper';
 import {getGroups, saveGroupData} from '../../redux/reducers/groupsReducer';
 import {clearAddedData} from '../../redux/reducers/historyReducer';
 import {listGroups} from '../../services/apis/groups';
+import LinearGradient from 'react-native-linear-gradient';
 
 const HomeScreen = ({navigation}: any) => {
   const {currentUser, token} = useAppSelector(state => state.users);
@@ -41,6 +44,20 @@ const HomeScreen = ({navigation}: any) => {
       id: data._id,
     };
     navigation.navigate('UserDetails', payload);
+  };
+
+  const localImages = [
+    require('../../assets/Images/icon1.png'),
+    require('../../assets/Images/icon2.png'),
+    require('../../assets/Images/icon3.png'),
+    require('../../assets/Images/icon4.png'),
+    require('../../assets/Images/icon5.png'),
+    require('../../assets/Images/icon6.png'),
+  ];
+
+  const getRandomImage = () => {
+    const randomIndex = Math.floor(Math.random() * localImages.length);
+    return localImages[randomIndex];
   };
 
   useEffect(() => {
@@ -66,29 +83,32 @@ const HomeScreen = ({navigation}: any) => {
     dispatch(getGroups(null));
   };
 
-  const renderItem = ({item}: FormValuesType | any) => (
-    <Pressable
-      onPress={() => {
-        onPressUser(item);
-        dispatch(clearAddedData(''));
-      }}
-      key={item._id}>
-      <View style={homeStyle.section}>
-        <View style={homeStyle.leftpart}>
-          {/*<TouchableOpacity onPress={() => onPressImage(item)}>
-            <Image
-              style={homeStyle.profileImage}
-              source={{uri: item?.imageUrl}}
-            />
-          </TouchableOpacity>*/}
-          <View style={homeStyle.datawrap}>
-            <Text style={homeStyle.name}>{item.title}</Text>
+  const renderItem = ({item}: FormValuesType | any) => {
+    const randomImage = getRandomImage();
+
+    return (
+      <Pressable
+        onPress={() => {
+          onPressUser(item);
+          dispatch(clearAddedData(''));
+        }}
+        key={item._id}>
+        <View style={homeStyle.section}>
+          <View style={homeStyle.leftpart}>
+            <TouchableOpacity
+              onPress={() => onPressImage(item)}
+              style={homeStyle.imageCover}>
+              <Image style={homeStyle.profileImage} source={randomImage} />
+            </TouchableOpacity>
+            <View style={homeStyle.datawrap}>
+              <Text style={homeStyle.name}>{item.title}</Text>
+            </View>
           </View>
+          <Text style={homeStyle.registertime}>Tap to view more</Text>
         </View>
-        <Text style={homeStyle.registertime}>Tap to view more</Text>
-      </View>
-    </Pressable>
-  );
+      </Pressable>
+    );
+  };
 
   return (
     <PaperProvider>
@@ -101,11 +121,26 @@ const HomeScreen = ({navigation}: any) => {
       </Portal>
       <View style={homeStyle.container}>
         <View style={homeStyle.imageWrap}>
-          <ImageBackground
-            source={require('../../assets/Images/background.jpg')}
-            style={homeStyle.backgroundImage}>
-            <Text style={homeStyle.heading}>Hi, {currentUser}</Text>
-          </ImageBackground>
+          <Text style={homeStyle.heading}>Hi, {currentUser}!</Text>
+        </View>
+        <View style={homeStyle.contentWrap}>
+          <LinearGradient
+            colors={['#0BCF9D', '#24E0EB']}
+            style={homeStyle.gradient}>
+            <View style={homeStyle.welcomeWall}>
+              <Text style={homeStyle.text}>
+                Manage your
+                {'\n'}
+                expense{'\n'}
+                brillianlty
+              </Text>
+              <Image
+                source={require('../../assets/Images/purse.png')}
+                style={homeStyle.wallimage}
+                resizeMode="contain"
+              />
+            </View>
+          </LinearGradient>
         </View>
         <View style={homeStyle.detailWrap}>
           <FlatList

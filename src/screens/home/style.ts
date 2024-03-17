@@ -6,6 +6,13 @@ export const homeStyle = StyleSheet.create({
     flex: 1,
     width: '100%',
     backgroundColor: '#121B22',
+    padding: 24,
+    paddingTop: 0,
+  },
+  contentWrap: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    height: 200,
   },
   menuBtn: {
     backgroundColor: 'transparent',
@@ -28,7 +35,7 @@ export const homeStyle = StyleSheet.create({
     height: '20%',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     width: '100%',
   },
   backgroundImage: {
@@ -52,7 +59,7 @@ export const homeStyle = StyleSheet.create({
   },
 
   section: {
-    alignItems: 'flex-start',
+    alignItems: 'center',
     padding: 16,
     display: 'flex',
     flexDirection: 'row',
@@ -62,10 +69,18 @@ export const homeStyle = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
   },
+  imageCover: {
+    width: 42,
+    height: 42,
+    backgroundColor: '#12D4B4',
+    borderRadius: 8,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   profileImage: {
-    width: 48,
-    height: 48,
-    borderRadius: 94,
+    width: '80%',
+    height: '80%',
     objectFit: 'cover',
   },
   datawrap: {
@@ -93,5 +108,46 @@ export const homeStyle = StyleSheet.create({
     margin: 16,
     right: 0,
     bottom: 0,
+  },
+  gradient: {
+    flex: 1,
+    position: 'absolute',
+    display: 'flex',
+    // flexDirection: 'row',
+    width: '100%',
+    height: 160,
+    borderRadius: 28,
+  },
+  text: {
+    color: 'white', // or any color you prefer
+    fontSize: 20,
+    marginBottom: 20,
+    lineHeight: 30,
+    fontWeight: '600',
+  },
+  welcomeWall: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    height: '100%',
+    width: '100%',
+    position: 'absolute',
+    padding: 24,
+  },
+  wallimage: {
+    width: 140,
+    height: 140,
+    borderRadius: 94,
+    objectFit: 'cover',
+    position: 'absolute',
+    right: 0,
+    top: '20%',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    // Elevation for Android
+    elevation: 4,
   },
 });
