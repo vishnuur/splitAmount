@@ -23,7 +23,7 @@ import {getGroups, saveGroupData} from '../../redux/reducers/groupsReducer';
 import {clearAddedData} from '../../redux/reducers/historyReducer';
 import {listGroups} from '../../services/apis/groups';
 import LinearGradient from 'react-native-linear-gradient';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 const HomeScreen = ({navigation}: any) => {
   const {currentUser, token} = useAppSelector(state => state.users);
   const {groups} = useAppSelector(state => state.groups);
@@ -105,6 +105,7 @@ const HomeScreen = ({navigation}: any) => {
             </View>
           </View>
           <Text style={homeStyle.registertime}>Tap to view more</Text>
+          <Icon name="chevron-right" size={20} color="#12D4B4" />
         </View>
       </Pressable>
     );
