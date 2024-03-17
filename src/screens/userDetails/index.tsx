@@ -27,6 +27,7 @@ import {
   BottomSheetModalProvider,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
+import AddExpense from '../expenseAdd';
 
 interface UserData {
   text: string;
@@ -40,14 +41,14 @@ interface editInterface {
 
 const UserDetails = ({route}: any) => {
   const dispatch = useAppDispatch();
-  const {history} = useAppSelector(state => state.history);
+  const {history, dataAddedSuccess} = useAppSelector(state => state.history);
   const data = route.params;
   const navigation = useNavigation();
   const currentUser = {name: 'vishnu'};
 
   useEffect(() => {
     dispatch(getHistory(data.id));
-  }, [data]);
+  }, [data, dataAddedSuccess]);
 
   const formatSplitText = (value: number) => {
     if (value < 0) {
@@ -61,7 +62,7 @@ const UserDetails = ({route}: any) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['25%', '50%'], []);
+  const snapPoints = useMemo(() => ['30%', '80%'], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
@@ -113,8 +114,7 @@ const UserDetails = ({route}: any) => {
           <View style={homeStyle.userImageWrap}>
             <Button
               onPress={() => {
-                handlePresentModalPress();
-                // dispatch(clearAddedData(''));
+                dispatch(clearAddedData(''));
               }}
               icon="camera"
               mode="contained"
@@ -131,7 +131,7 @@ const UserDetails = ({route}: any) => {
         </ImageBackground>
         <FAB
           icon="plus"
-          onPress={() => navigation.navigate('ExpenseAdd')}
+          onPress={() => handlePresentModalPress()}
           label="Add expense"
           style={homeStyle.fab}
         />
@@ -140,9 +140,10 @@ const UserDetails = ({route}: any) => {
         ref={bottomSheetModalRef}
         index={1}
         snapPoints={snapPoints}
-        onChange={handleSheetChanges}>
+        onChange={handleSheetChanges}
+        contentHeight={360}>
         <BottomSheetView style={styles.contentContainer}>
-          <Text>Awesome 🎉</Text>
+          <AddExpense groupData={data} />
         </BottomSheetView>
       </BottomSheetModal>
     </BottomSheetModalProvider>
@@ -157,9 +158,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
   contentContainer: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: 'white',
+    padding: 24,
   },
 });
 

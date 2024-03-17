@@ -12,7 +12,6 @@ export const createGroup = async (payload: any) => {
 export const listGroups = async () => {
   try {
     const result: any = await get('api/groups');
-    console.log(result, 'resilttts');
     return result;
   } catch (er) {
     console.log(er, 'err');

@@ -1,12 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {View, TextInput, Button, Text, TouchableOpacity} from 'react-native';
-import {saveAddedData} from '../../redux/reducers/historyReducer';
+import {getHistory, saveAddedData} from '../../redux/reducers/historyReducer';
 import {useAppDispatch} from '../../redux/hooks';
 import {useNavigation} from '@react-navigation/native';
 import {SelectList} from 'react-native-dropdown-select-list';
 import ModalComponent from '../../components/Modal';
 import FavoritesModal from './components/favoritesModal';
+import {useBottomSheetModal} from '@gorhom/bottom-sheet';
+import {styles} from './style';
 
+interface propsGroup {
+  groupData: any;
+}
 interface FormData {
   title: string;
   description: string;
@@ -17,7 +22,9 @@ const peopleDummyData = [{name: 'vishnu'}, {name: 'bhavya'}, {name: 'nadish'}];
 
 const currentUser = {name: 'vishnu'};
 
-const MyComponent: React.FC = () => {
+const AddExpense = ({groupData}: propsGroup) => {
+  const {dismiss, dismissAll} = useBottomSheetModal();
+
   const [formData, setFormData] = useState<FormData>({
     title: '',
     description: '',
@@ -51,7 +58,7 @@ const MyComponent: React.FC = () => {
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const newErrors: Partial<FormData> = {};
     if (!formData.title) {
       newErrors.title = 'Title is required';
@@ -60,16 +67,20 @@ const MyComponent: React.FC = () => {
       newErrors.amount = 'Amount is required';
     }
     setErrors(newErrors);
-    getCalculatedSplit();
+    const moneySplitedData = await getCalculatedSplit();
     if (Object.keys(newErrors).length === 0) {
       const newData = {
         ...formData,
-        ...moneySplit,
+        ...moneySplitedData,
         date: new Date().toISOString(),
       };
-      dispatch(saveAddedData(newData));
+      const payload = {
+        newData,
+        id: groupData.id,
+      };
+      dispatch(saveAddedData(payload));
+      dismissAll();
     }
-    navigation.goBack();
   };
   const getCalculatedSplit = () => {
     let result = 0;
@@ -107,7 +118,9 @@ const MyComponent: React.FC = () => {
       }
     });
     const payload = {...group, payedBy};
+    console.log(payload, 'checkboth');
     setmoneySplit(payload);
+    return payload;
   };
 
   const options = [];
@@ -134,7 +147,7 @@ const MyComponent: React.FC = () => {
   });
 
   return (
-    <View>
+    <View style={styles.container}>
       <TextInput
         placeholder="Amount"
         value={formData.amount}
@@ -154,18 +167,24 @@ const MyComponent: React.FC = () => {
         value={formData.description}
         onChangeText={text => handleInputChange('description', text)}
       />
-      <SelectList
-        setSelected={(val: any) => {
-          setselectedValue(val);
-        }}
-        defaultOption={{key: 1, value: 'Payed by you, split half'}}
-        data={options}
-        save="value"
-      />
-      <Text>OR</Text>
-      <TouchableOpacity onPress={() => setcustomModalvisible(true)}>
-        <Text>Use Custom</Text>
-      </TouchableOpacity>
+      <View style={styles.inputContainer}>
+        <SelectList
+          setSelected={(val: any) => {
+            setselectedValue(val);
+          }}
+          defaultOption={{key: 1, value: 'Payed by you, split half'}}
+          data={options}
+          save="value"
+          boxStyles={styles.dropDownBoxStyle}
+          dropdownStyles={styles.dropDownContainerStyle}
+        />
+        <Text>OR</Text>
+        <TouchableOpacity
+          onPress={() => setcustomModalvisible(true)}
+          style={styles.customButton}>
+          <Text>Use Custom</Text>
+        </TouchableOpacity>
+      </View>
       <Button
         title="Save"
         onPress={handleSave}
@@ -188,4 +207,4 @@ const MyComponent: React.FC = () => {
   );
 };
 
-export default MyComponent;
+export default AddExpense;

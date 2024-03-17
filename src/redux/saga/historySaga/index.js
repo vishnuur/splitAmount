@@ -1,11 +1,14 @@
 import {call, put, takeEvery, takeLatest} from 'redux-saga/effects';
-import {historyList} from '../../../services/apis/history';
+import {
+  getGroupPaymentData,
+  historyList,
+  savePaymentData,
+} from '../../../services/apis/history';
 
-// worker Saga: will be fired on USER_FETCH_REQUESTED actions
-function* groupListSaga(action) {
+function* paymentListSaga(action) {
   let result;
   try {
-    result = yield call(historyList, action.payload);
+    result = yield call(getGroupPaymentData, action.payload);
   } catch (e) {
     yield put({type: 'USER_FETCH_FAILED', message: e.message});
   } finally {
@@ -13,8 +16,20 @@ function* groupListSaga(action) {
   }
 }
 
+function* savePaymentSaga(action) {
+  let result;
+  try {
+    result = yield call(savePaymentData, action.payload);
+  } catch (e) {
+    yield put({type: 'USER_FETCH_FAILED', message: e.message});
+  } finally {
+    yield put({type: 'history/dataAddedStatus', payload: result});
+  }
+}
+
 function* historySaga() {
-  yield takeEvery('history/getHistory', groupListSaga);
+  yield takeEvery('history/saveAddedData', savePaymentSaga);
+  yield takeEvery('history/getHistory', paymentListSaga);
 }
 
 export default historySaga;

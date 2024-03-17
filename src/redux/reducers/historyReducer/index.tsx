@@ -3,11 +3,13 @@ import {createSlice} from '@reduxjs/toolkit';
 export interface stateType {
   history: any;
   groupDetails: any;
+  dataAddedSuccess: boolean;
 }
 
 const initialState: stateType = {
   history: [],
   groupDetails: [],
+  dataAddedSuccess: false,
 };
 
 export const historySlice = createSlice({
@@ -15,13 +17,16 @@ export const historySlice = createSlice({
   initialState,
   reducers: {
     saveAddedData: (state, action) => {
-      state.history = [...state.history, action.payload];
+      console.log('first');
     },
     getHistory: (state, action) => {
       console.log(action);
     },
     saveHistory: (state, action) => {
-      state.groupDetails = action.payload;
+      state.history = action.payload;
+    },
+    dataAddedStatus: (state, action) => {
+      state.dataAddedSuccess = action.payload;
     },
     clearAddedData: (state, action) => {
       state.history = [];

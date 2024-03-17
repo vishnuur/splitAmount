@@ -7,7 +7,6 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import HomeScreen from '../screens/home';
 import LoginScreen from '../screens/login';
 import RegistrationScreen from '../screens/registration';
-import ExpenseAdd from '../screens/expenseAdd';
 import CustomIcon from '../components/CustomIcons';
 import UserDetails from '../screens/userDetails';
 import imagePaths from '../constants/images';
@@ -68,35 +67,6 @@ const StackNavigator = ({navigation}: any) => (
               </Text>
             </View>
           ),
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}
-              style={{marginLeft: 16}}>
-              <CustomIcon>
-                <MaterialIcon name="arrow-back" />
-              </CustomIcon>
-            </TouchableOpacity>
-          ),
-        };
-      }}
-    />
-    <Stack.Screen
-      name="ExpenseAdd"
-      component={ExpenseAdd}
-      options={() => {
-        return {
-          drawerLabel: 'User Details',
-          headerShown: true,
-          headerStyle: {
-            backgroundColor: '#232D36',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTitle: 'Add Expense',
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => {
