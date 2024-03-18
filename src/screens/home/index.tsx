@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
+  Dimensions,
   FlatList,
   Image,
   ImageBackground,
@@ -24,12 +25,15 @@ import {clearAddedData} from '../../redux/reducers/historyReducer';
 import {listGroups} from '../../services/apis/groups';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Carousel from 'react-native-reanimated-carousel';
+
 const HomeScreen = ({navigation}: any) => {
   const {currentUser, token} = useAppSelector(state => state.users);
   const {groups} = useAppSelector(state => state.groups);
   const [visible, setVisible] = useState(false);
   const [selectedImage, setselectedImage] = useState('');
   const [visibleModal, setVisibleModal] = React.useState(false);
+  const width = Dimensions.get('window').width;
 
   const dispatch = useAppDispatch();
 
@@ -104,7 +108,6 @@ const HomeScreen = ({navigation}: any) => {
               <Text style={homeStyle.name}>{item.title}</Text>
             </View>
           </View>
-          <Text style={homeStyle.registertime}>Tap to view more</Text>
           <Icon name="chevron-right" size={20} color="#12D4B4" />
         </View>
       </Pressable>
@@ -124,25 +127,39 @@ const HomeScreen = ({navigation}: any) => {
         <View style={homeStyle.imageWrap}>
           <Text style={homeStyle.heading}>Hi, {currentUser}!</Text>
         </View>
-        <View style={homeStyle.contentWrap}>
-          <LinearGradient
-            colors={['#0BCF9D', '#24E0EB']}
-            style={homeStyle.gradient}>
-            <View style={homeStyle.welcomeWall}>
-              <Text style={homeStyle.text}>
-                Manage your
-                {'\n'}
-                expense{'\n'}
-                brillianlty
-              </Text>
-              <Image
-                source={require('../../assets/Images/purse.png')}
-                style={homeStyle.wallimage}
-                resizeMode="contain"
-              />
-            </View>
-          </LinearGradient>
+        <View style={homeStyle.carouselWrap}>
+          <Carousel
+            loop
+            width={width}
+            height={width / 2}
+            autoPlay={true}
+            data={[...new Array(6).keys()]}
+            scrollAnimationDuration={2000}
+            onSnapToItem={index => console.log('current index:', index)}
+            renderItem={() => (
+              <View style={homeStyle.contentWrap}>
+                <LinearGradient
+                  colors={['#0BCF9D', '#24E0EB']}
+                  style={homeStyle.gradient}>
+                  <View style={homeStyle.welcomeWall}>
+                    <Text style={homeStyle.text}>
+                      Manage your
+                      {'\n'}
+                      expense{'\n'}
+                      brilliantly
+                    </Text>
+                    <Image
+                      source={require('../../assets/Images/purse.png')}
+                      style={homeStyle.wallimage}
+                      resizeMode="contain"
+                    />
+                  </View>
+                </LinearGradient>
+              </View>
+            )}
+          />
         </View>
+
         <View style={homeStyle.detailWrap}>
           <FlatList
             data={groups}

@@ -6,13 +6,19 @@ export const homeStyle = StyleSheet.create({
     flex: 1,
     width: '100%',
     backgroundColor: '#121B22',
-    padding: 24,
     paddingTop: 0,
+    padding: 12,
   },
   contentWrap: {
     display: 'flex',
     justifyContent: 'space-between',
     height: 200,
+    marginRight: 22,
+  },
+  carouselWrap: {
+    // margin: 24,
+    width: '100%',
+    // position: 'absolute',
   },
   menuBtn: {
     backgroundColor: 'transparent',
@@ -110,7 +116,6 @@ export const homeStyle = StyleSheet.create({
     bottom: 0,
   },
   gradient: {
-    flex: 1,
     position: 'absolute',
     display: 'flex',
     // flexDirection: 'row',
