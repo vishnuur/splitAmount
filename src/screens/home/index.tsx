@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -18,7 +18,7 @@ import {homeStyle} from './style';
 
 import {FormValuesType} from '../registration';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
-import ModalComponent from './components/modal';
+import CreateGroup from './components/createGroup';
 import {FAB} from 'react-native-paper';
 import {getGroups, saveGroupData} from '../../redux/reducers/groupsReducer';
 import {clearAddedData} from '../../redux/reducers/historyReducer';
@@ -26,6 +26,11 @@ import {listGroups} from '../../services/apis/groups';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Carousel from 'react-native-reanimated-carousel';
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
 
 const HomeScreen = ({navigation}: any) => {
   const {currentUser, token} = useAppSelector(state => state.users);
@@ -87,6 +92,20 @@ const HomeScreen = ({navigation}: any) => {
     dispatch(getGroups(null));
   };
 
+  // ref
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['30%', '50%'], []);
+
+  // callbacks
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
+
   const renderItem = ({item}: FormValuesType | any) => {
     const randomImage = getRandomImage();
 
@@ -116,69 +135,69 @@ const HomeScreen = ({navigation}: any) => {
 
   return (
     <PaperProvider>
-      <Portal>
-        <ModalComponent
-          visible={visibleModal}
-          handleModalOutsidePress={hideModal}
-          onSave={saveGroupNameFn}
-        />
-      </Portal>
-      <View style={homeStyle.container}>
-        <View style={homeStyle.imageWrap}>
-          <Text style={homeStyle.heading}>Hi, {currentUser}!</Text>
-        </View>
-        <View style={homeStyle.carouselWrap}>
-          <Carousel
-            loop
-            width={width}
-            height={width / 2}
-            autoPlay={true}
-            data={[...new Array(6).keys()]}
-            scrollAnimationDuration={2000}
-            onSnapToItem={index => console.log('current index:', index)}
-            renderItem={() => (
-              <View style={homeStyle.contentWrap}>
-                <LinearGradient
-                  colors={['#0BCF9D', '#24E0EB']}
-                  style={homeStyle.gradient}>
-                  <View style={homeStyle.welcomeWall}>
-                    <Text style={homeStyle.text}>
-                      Manage your
-                      {'\n'}
-                      expense{'\n'}
-                      brilliantly
-                    </Text>
-                    <Image
-                      source={require('../../assets/Images/purse.png')}
-                      style={homeStyle.wallimage}
-                      resizeMode="contain"
-                    />
-                  </View>
-                </LinearGradient>
-              </View>
-            )}
-          />
-        </View>
+      <BottomSheetModalProvider>
+        <View style={homeStyle.container}>
+          <View style={homeStyle.imageWrap}>
+            <Text style={homeStyle.heading}>Hi, {currentUser}!</Text>
+          </View>
+          <View style={homeStyle.carouselWrap}>
+            <Carousel
+              loop
+              width={width}
+              height={width / 2}
+              autoPlay={true}
+              data={[...new Array(6).keys()]}
+              scrollAnimationDuration={2000}
+              onSnapToItem={index => console.log('current index:', index)}
+              renderItem={() => (
+                <View style={homeStyle.contentWrap}>
+                  <LinearGradient
+                    colors={['#0BCF9D', '#24E0EB']}
+                    style={homeStyle.gradient}>
+                    <View style={homeStyle.welcomeWall}>
+                      <Text style={homeStyle.text}>
+                        Manage your
+                        {'\n'}
+                        expense{'\n'}
+                        brilliantly
+                      </Text>
+                      <Image
+                        source={require('../../assets/Images/purse.png')}
+                        style={homeStyle.wallimage}
+                        resizeMode="contain"
+                      />
+                    </View>
+                  </LinearGradient>
+                </View>
+              )}
+            />
+          </View>
 
-        <View style={homeStyle.detailWrap}>
-          <FlatList
-            data={groups}
-            renderItem={renderItem}
-            keyExtractor={item => item}
+          <View style={homeStyle.detailWrap}>
+            <FlatList
+              data={groups}
+              renderItem={renderItem}
+              keyExtractor={item => item}
+            />
+          </View>
+          <FAB
+            icon="plus"
+            onPress={() => handlePresentModalPress()}
+            label="Create Group"
+            style={homeStyle.fab}
           />
+          <BottomSheetModal
+            ref={bottomSheetModalRef}
+            index={1}
+            snapPoints={snapPoints}
+            onChange={handleSheetChanges}
+            contentHeight={360}>
+            <BottomSheetView style={homeStyle.groupCreateContainer}>
+              <CreateGroup onSave={saveGroupNameFn} />
+            </BottomSheetView>
+          </BottomSheetModal>
         </View>
-        {/*<ModalComponent
-          visible={visible}
-          image={selectedImage}
-          handleModalOutsidePress={handleModalOutsidePress}
-        />*/}
-        <FAB
-          icon="plus"
-          onPress={showModal}
-          label="Create Group"
-          style={homeStyle.fab}
-        />
-      </View>
+      </BottomSheetModalProvider>
     </PaperProvider>
   );
 };

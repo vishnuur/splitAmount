@@ -48,7 +48,7 @@ const StackNavigator = ({navigation}: any) => (
           drawerLabel: 'User Details',
           headerShown: true,
           headerStyle: {
-            backgroundColor: '#232D36',
+            backgroundColor: '#121B22',
           },
           headerTintColor: '#fff',
           headerTitleStyle: {

@@ -155,4 +155,7 @@ export const homeStyle = StyleSheet.create({
     // Elevation for Android
     elevation: 4,
   },
+  groupCreateContainer: {
+    padding: 24,
+  },
 });

@@ -28,6 +28,7 @@ import {
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import AddExpense from '../expenseAdd';
+import LinearGradient from 'react-native-linear-gradient';
 
 interface UserData {
   text: string;
@@ -105,30 +106,51 @@ const UserDetails = ({route}: any) => {
     </View>
   );
 
+  const calculateVishnuSum = () => {
+    let totalVishnu = 0;
+
+    history.forEach((obj: any) => {
+      if (obj.hasOwnProperty(currentUser.name)) {
+        const vishnuValue = parseFloat(obj.vishnu);
+        if (!isNaN(vishnuValue)) {
+          totalVishnu += vishnuValue;
+        }
+      }
+    });
+
+    return totalVishnu;
+  };
+  console.log('historyvalue', history, calculateVishnuSum());
+
   return (
     <BottomSheetModalProvider>
       <View style={homeStyle.container}>
-        <ImageBackground
-          style={homeStyle.contentBg}
-          source={require('../../assets/Images/whatsappbg.jpg')}>
-          <View style={homeStyle.userImageWrap}>
+        <View style={homeStyle.userImageWrap}>
+          <LinearGradient
+            colors={['#0BCF9D', '#24E0EB']}
+            style={homeStyle.gradient}>
+            <Text style={homeStyle.totalSum}>
+              You {calculateVishnuSum() > 0 ? 'get back ' : 'owe '}
+              {calculateVishnuSum().toFixed(2)}Rs
+            </Text>
             <Button
+              style={homeStyle.settleUp}
               onPress={() => {
                 dispatch(clearAddedData(''));
               }}
-              icon="camera"
+              icon="delete-empty"
               mode="contained"
               //disabled={!formData.title || !formData.amount}
             >
-              Settle Up
+              Clear
             </Button>
-          </View>
-          <FlatList
-            data={history}
-            renderItem={renderItem}
-            keyExtractor={item => item}
-          />
-        </ImageBackground>
+          </LinearGradient>
+        </View>
+        <FlatList
+          data={history}
+          renderItem={renderItem}
+          keyExtractor={item => item}
+        />
         <FAB
           icon="plus"
           onPress={() => handlePresentModalPress()}

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, TextInput, Button, Text, TouchableOpacity} from 'react-native';
+import {View, TextInput, Text, TouchableOpacity} from 'react-native';
 import {getHistory, saveAddedData} from '../../redux/reducers/historyReducer';
 import {useAppDispatch} from '../../redux/hooks';
 import {useNavigation} from '@react-navigation/native';
@@ -8,6 +8,7 @@ import ModalComponent from '../../components/Modal';
 import FavoritesModal from './components/favoritesModal';
 import {useBottomSheetModal} from '@gorhom/bottom-sheet';
 import {styles} from './style';
+import {Button} from 'react-native-paper';
 
 interface propsGroup {
   groupData: any;
@@ -186,10 +187,13 @@ const AddExpense = ({groupData}: propsGroup) => {
         </TouchableOpacity>
       </View>
       <Button
-        title="Save"
+        icon="content-save"
+        mode="contained"
         onPress={handleSave}
-        disabled={!formData.title || !formData.amount}
-      />
+        disabled={!formData.title || !formData.amount}>
+        Save
+      </Button>
+
       {customModalvisible ? (
         <ModalComponent
           visible={customModalvisible}

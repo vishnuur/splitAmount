@@ -6,6 +6,35 @@ export const homeStyle = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     width: '100%',
+    backgroundColor: '#121B22',
+  },
+  userImageWrap: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '20%',
+  },
+  gradient: {
+    width: '100%',
+    height: '100%',
+    borderBottomRightRadius: 8,
+    borderBottomLeftRadius: 8,
+    display: 'flex',
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  totalSum: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  settleUp: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
+    width: 20,
   },
   heading: {
     fontSize: 24,
@@ -29,12 +58,7 @@ export const homeStyle = StyleSheet.create({
     width: '100%',
     resizeMode: 'cover',
   },
-  userImageWrap: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 24,
-  },
+
   image: {
     width: 120,
     height: 120,
@@ -48,7 +72,7 @@ export const homeStyle = StyleSheet.create({
   },
   section: {
     padding: 24,
-    borderBottomColor: 'grey',
+    borderBottomColor: 'gray',
     borderBottomWidth: 1,
     width: '100%',
     display: 'flex',
