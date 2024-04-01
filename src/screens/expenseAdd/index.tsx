@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, TextInput, Text, TouchableOpacity} from 'react-native';
 import {getHistory, saveAddedData} from '../../redux/reducers/historyReducer';
-import {useAppDispatch} from '../../redux/hooks';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {useNavigation} from '@react-navigation/native';
 import {SelectList} from 'react-native-dropdown-select-list';
 import ModalComponent from '../../components/Modal';
@@ -10,6 +10,8 @@ import {useBottomSheetModal} from '@gorhom/bottom-sheet';
 import {styles} from './style';
 import {Button} from 'react-native-paper';
 import CustomInput from '../../components/CustomInput';
+import {getExpenseTypes} from '../../redux/reducers/generalReducer';
+import DropdownComponent from '../../components/CustomDropDown';
 
 interface propsGroup {
   groupData: any;
@@ -26,6 +28,7 @@ const currentUser = {name: 'vishnu'};
 
 const AddExpense = ({groupData}: propsGroup) => {
   const {dismissAll} = useBottomSheetModal();
+  const {expenseTypes} = useAppSelector(state => state.general);
 
   const [formData, setFormData] = useState<FormData>({
     title: '',
@@ -39,10 +42,20 @@ const AddExpense = ({groupData}: propsGroup) => {
   const initialSliderValues = peopleDummyData.map(() => 0);
   const [values, setValues] = useState(initialSliderValues);
   const [moneySplit, setmoneySplit] = useState({});
+  const [expenseTypesArray, setexpenseTypesArray] = useState([]);
+  const [selectedType, setselectedType] = useState('');
 
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    dispatch(getExpenseTypes(null));
+  }, []);
+
+  const handleChangeExpenseType = (value: any) => {
+    setselectedType(value);
+  };
 
   const handleInputChange = (fieldName: keyof FormData, value: string) => {
     setFormData({
@@ -148,6 +161,23 @@ const AddExpense = ({groupData}: propsGroup) => {
     value: `You owe full`,
   });
 
+  const imageMap: any = {
+    Grocery: require('../../assets/Icons/grocery.jpeg'),
+    Gas: require('../../assets/Icons/gas.jpeg'),
+    Dining: require('../../assets/Icons/dining.jpeg'),
+    Shopping: require('../../assets/Icons/shopping.jpeg'),
+    Food: require('../../assets/Icons/delivery.jpeg'),
+    Enjoyment: require('../../assets/Icons/fun.jpeg'),
+    Others: require('../../assets/Icons/others.jpeg'),
+  };
+  useEffect(() => {
+    const enrichedObjects = expenseTypes.map((obj: any) => {
+      const assignedImage = imageMap[obj.title];
+      return {...obj, image: assignedImage}; // Spread existing object & add image
+    });
+    setexpenseTypesArray(enrichedObjects);
+  }, []);
+
   return (
     <View style={styles.container}>
       <CustomInput
@@ -169,7 +199,14 @@ const AddExpense = ({groupData}: propsGroup) => {
         handleChange={text => handleInputChange('description', text)}
         value={formData.description}
       />
-
+      {expenseTypes && (
+        <DropdownComponent
+          data={expenseTypesArray}
+          placeholder="Select a type"
+          handleChange={(value: any) => handleChangeExpenseType(value)}
+          value={selectedType}
+        />
+      )}
       <View style={styles.inputContainer}>
         <SelectList
           setSelected={(val: any) => {

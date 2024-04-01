@@ -14,11 +14,13 @@ import groupSlice from './reducers/groupsReducer';
 import historyList from './reducers/historyReducer';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './saga';
+import generalReducer from './reducers/generalReducer';
 
 const reducers = combineReducers({
   users: counterSlice,
   history: historyList,
   groups: groupSlice,
+  general: generalReducer,
 });
 
 const sagaMiddleware = createSagaMiddleware();

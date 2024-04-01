@@ -83,7 +83,6 @@ const HomeScreen = ({navigation}: any) => {
           userIds: [userId.userId],
         };
         dispatch(createGroup(payload));
-        dispatch(getGroups(null));
       }
     }
   };
