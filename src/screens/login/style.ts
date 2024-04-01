@@ -11,11 +11,22 @@ export const loginStyles = StyleSheet.create({
   },
   wrap: {
     width: '90%',
-    padding: 24,
+    padding: 12,
     backgroundColor: 'transparent',
     borderRadius: 20,
     justifyContent: 'center',
     display: 'flex',
+  },
+  loginSingleWrap: {
+    padding: 16,
+    height: 280,
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
+    borderRadius: 18,
+    backgroundColor: 'white',
+    elevation: 5,
   },
   backgroundImage: {
     flex: 1,
@@ -27,12 +38,12 @@ export const loginStyles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
-    color: 'white',
+    color: '#12D4B4',
   },
   input: {
     width: '100%',
     height: 40,
-    borderColor: 'transparent',
+    borderColor: '#12D4B4',
     borderWidth: 1,
     marginTop: 16,
     borderBottomColor: 'grey',
@@ -72,16 +83,17 @@ export const loginStyles = StyleSheet.create({
   },
   signUpText: {
     marginTop: 18,
-    color: 'white',
+    color: 'grey',
     fontWeight: '600',
   },
   signUpBtnText: {
-    color: '#f5f5dc',
+    color: '#12D4B4',
     textDecorationLine: 'underline',
   },
   signUpWrapTextwrap: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
   },
 });

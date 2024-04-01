@@ -109,7 +109,7 @@ const UserDetails = ({route}: any) => {
   const calculateVishnuSum = () => {
     let totalVishnu = 0;
 
-    history.forEach((obj: any) => {
+    history?.forEach((obj: any) => {
       if (obj.hasOwnProperty(currentUser.name)) {
         const vishnuValue = parseFloat(obj.vishnu);
         if (!isNaN(vishnuValue)) {
@@ -120,7 +120,6 @@ const UserDetails = ({route}: any) => {
 
     return totalVishnu;
   };
-  console.log('historyvalue', history, calculateVishnuSum());
 
   return (
     <BottomSheetModalProvider>

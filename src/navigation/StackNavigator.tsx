@@ -93,11 +93,8 @@ const AuthNavigator = ({navigation}: any) => (
       component={RegistrationScreen}
       options={{
         headerShown: true,
-        headerStyle: {
-          backgroundColor: 'transparent',
-        },
         headerTransparent: true,
-        headerTintColor: 'white',
+        headerTintColor: 'black',
       }}
     />
   </Stack.Navigator>

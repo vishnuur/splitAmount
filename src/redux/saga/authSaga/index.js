@@ -1,5 +1,5 @@
 import {call, put, takeEvery, takeLatest} from 'redux-saga/effects';
-import {loginUser} from '../../../services/apis/login';
+import {loginUser, signUp} from '../../../services/apis/login';
 import {setAsyncStorage} from '../../../utils/asyncStorageUtils';
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
@@ -15,8 +15,21 @@ function* loginUserSaga(action) {
   }
 }
 
+function* signupSaga(action) {
+  let result;
+  try {
+    result = yield call(signUp, action.payload);
+  } catch (er) {
+    console.log(er);
+    result = er;
+  } finally {
+    yield put({type: 'counter/signedUp', payload: result});
+  }
+}
+
 function* mySaga() {
-  yield takeEvery('counter/loginReducer', loginUserSaga);
+  yield takeLatest('counter/loginReducer', loginUserSaga);
+  yield takeLatest('counter/onSigningUp', signupSaga);
 }
 
 export default mySaga;

@@ -36,32 +36,33 @@ const LoginScreen = ({navigation}: any) => {
 
   return (
     <ImageBackground
-      source={require('../../assets/Images/background.jpg')}
-      style={loginStyles.backgroundImage}>
+      source={require('../../assets/Images/wallpaper.png')}
+      style={loginStyles.backgroundImage}
+      blurRadius={1}>
       <View style={loginStyles.container}>
         <View style={loginStyles.wrap}>
-          <Text style={loginStyles.title}>Login</Text>
-
-          <CustomInput
-            handleChange={text => setemail(text)}
-            value={email}
-            autoCapitalize="none"
-            placeholder="Email"
-            onSubmitEdit={handleSignIn}
-            keyboardType="email-address"
-          />
-          <CustomInput
-            handleChange={text => setPassword(text)}
-            value={password}
-            autoCapitalize="none"
-            placeholder="Password"
-            onSubmitEdit={handleSignIn}
-            secureTextEntry={true}
-          />
-
-          <TouchableOpacity style={loginStyles.button} onPress={handleSignIn}>
-            <Text style={loginStyles.buttonText}>Sign In</Text>
-          </TouchableOpacity>
+          <View style={loginStyles.loginSingleWrap}>
+            <Text style={loginStyles.title}>Login</Text>
+            <CustomInput
+              handleChange={text => setemail(text)}
+              value={email}
+              autoCapitalize="none"
+              placeholder="Email"
+              onSubmitEdit={handleSignIn}
+              keyboardType="email-address"
+            />
+            <CustomInput
+              handleChange={text => setPassword(text)}
+              value={password}
+              autoCapitalize="none"
+              placeholder="Password"
+              onSubmitEdit={handleSignIn}
+              secureTextEntry={true}
+            />
+            <TouchableOpacity style={loginStyles.button} onPress={handleSignIn}>
+              <Text style={loginStyles.buttonText}>Sign In</Text>
+            </TouchableOpacity>
+          </View>
 
           <View style={loginStyles.signUpWrapTextwrap}>
             <Text style={loginStyles.signUpText}>Don't have an account? </Text>

@@ -11,8 +11,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Portal, Button, PaperProvider} from 'react-native-paper';
-import {BottomNavigation} from 'react-native-paper';
 
 import {homeStyle} from './style';
 
@@ -20,9 +18,8 @@ import {FormValuesType} from '../registration';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import CreateGroup from './components/createGroup';
 import {FAB} from 'react-native-paper';
-import {getGroups, saveGroupData} from '../../redux/reducers/groupsReducer';
+import {getGroups, createGroup} from '../../redux/reducers/groupsReducer';
 import {clearAddedData} from '../../redux/reducers/historyReducer';
-import {listGroups} from '../../services/apis/groups';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Carousel from 'react-native-reanimated-carousel';
@@ -31,21 +28,16 @@ import {
   BottomSheetModalProvider,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
+import {getUserId} from '../../utils/userDataUtils';
 
 const HomeScreen = ({navigation}: any) => {
   const {currentUser, token} = useAppSelector(state => state.users);
   const {groups} = useAppSelector(state => state.groups);
   const [visible, setVisible] = useState(false);
   const [selectedImage, setselectedImage] = useState('');
-  const [visibleModal, setVisibleModal] = React.useState(false);
   const width = Dimensions.get('window').width;
 
   const dispatch = useAppDispatch();
-
-  const showModal = () => {
-    setVisibleModal(true);
-  };
-  const hideModal = () => setVisibleModal(false);
 
   const onPressUser = (data: any) => {
     const payload = {
@@ -82,14 +74,18 @@ const HomeScreen = ({navigation}: any) => {
   //    setVisible(false);
   //  };
 
-  const saveGroupNameFn = (grpupName: string, userName: string) => {
-    const payload = {
-      title: grpupName,
-      usernames: [userName],
-    };
-    dispatch(saveGroupData(payload));
-    hideModal();
-    dispatch(getGroups(null));
+  const saveGroupNameFn = async (grpupName: string, userName: string) => {
+    if (userName) {
+      const userId = await getUserId(userName);
+      if (userId.userId) {
+        const payload = {
+          title: grpupName,
+          userIds: [userId.userId],
+        };
+        dispatch(createGroup(payload));
+        dispatch(getGroups(null));
+      }
+    }
   };
 
   // ref
@@ -134,71 +130,69 @@ const HomeScreen = ({navigation}: any) => {
   };
 
   return (
-    <PaperProvider>
-      <BottomSheetModalProvider>
-        <View style={homeStyle.container}>
-          <View style={homeStyle.imageWrap}>
-            <Text style={homeStyle.heading}>Hi, {currentUser}!</Text>
-          </View>
-          <View style={homeStyle.carouselWrap}>
-            <Carousel
-              loop
-              width={width}
-              height={width / 2}
-              autoPlay={true}
-              data={[...new Array(6).keys()]}
-              scrollAnimationDuration={2000}
-              onSnapToItem={index => console.log('current index:', index)}
-              renderItem={() => (
-                <View style={homeStyle.contentWrap}>
-                  <LinearGradient
-                    colors={['#0BCF9D', '#24E0EB']}
-                    style={homeStyle.gradient}>
-                    <View style={homeStyle.welcomeWall}>
-                      <Text style={homeStyle.text}>
-                        Manage your
-                        {'\n'}
-                        expense{'\n'}
-                        brilliantly
-                      </Text>
-                      <Image
-                        source={require('../../assets/Images/purse.png')}
-                        style={homeStyle.wallimage}
-                        resizeMode="contain"
-                      />
-                    </View>
-                  </LinearGradient>
-                </View>
-              )}
-            />
-          </View>
-
-          <View style={homeStyle.detailWrap}>
-            <FlatList
-              data={groups}
-              renderItem={renderItem}
-              keyExtractor={item => item}
-            />
-          </View>
-          <FAB
-            icon="plus"
-            onPress={() => handlePresentModalPress()}
-            label="Create Group"
-            style={homeStyle.fab}
-          />
-          <BottomSheetModal
-            ref={bottomSheetModalRef}
-            index={1}
-            snapPoints={snapPoints}
-            onChange={handleSheetChanges}
-            contentHeight={360}>
-            <BottomSheetView style={homeStyle.groupCreateContainer}>
-              <CreateGroup onSave={saveGroupNameFn} />
-            </BottomSheetView>
-          </BottomSheetModal>
+    <BottomSheetModalProvider>
+      <View style={homeStyle.container}>
+        <View style={homeStyle.imageWrap}>
+          <Text style={homeStyle.heading}>Hi, {currentUser}!</Text>
         </View>
-      </BottomSheetModalProvider>
-    </PaperProvider>
+        <View style={homeStyle.carouselWrap}>
+          <Carousel
+            loop
+            width={width}
+            height={width / 2}
+            autoPlay={true}
+            data={[...new Array(6).keys()]}
+            scrollAnimationDuration={2000}
+            // onSnapToItem={index => console.log('current index:', index)}
+            renderItem={() => (
+              <View style={homeStyle.contentWrap}>
+                <LinearGradient
+                  colors={['#0BCF9D', '#24E0EB']}
+                  style={homeStyle.gradient}>
+                  <View style={homeStyle.welcomeWall}>
+                    <Text style={homeStyle.text}>
+                      Manage your
+                      {'\n'}
+                      expense{'\n'}
+                      brilliantly
+                    </Text>
+                    <Image
+                      source={require('../../assets/Images/purse.png')}
+                      style={homeStyle.wallimage}
+                      resizeMode="contain"
+                    />
+                  </View>
+                </LinearGradient>
+              </View>
+            )}
+          />
+        </View>
+
+        <View style={homeStyle.detailWrap}>
+          <FlatList
+            data={groups}
+            renderItem={renderItem}
+            keyExtractor={item => item._id}
+          />
+        </View>
+        <FAB
+          icon="plus"
+          onPress={() => handlePresentModalPress()}
+          label="Create Group"
+          style={homeStyle.fab}
+        />
+        <BottomSheetModal
+          ref={bottomSheetModalRef}
+          index={1}
+          snapPoints={snapPoints}
+          onChange={handleSheetChanges}
+          contentHeight={360}>
+          <BottomSheetView style={homeStyle.groupCreateContainer}>
+            <CreateGroup onSave={saveGroupNameFn} />
+          </BottomSheetView>
+        </BottomSheetModal>
+      </View>
+    </BottomSheetModalProvider>
   );
 };
 

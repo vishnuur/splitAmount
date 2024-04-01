@@ -9,6 +9,7 @@ import FavoritesModal from './components/favoritesModal';
 import {useBottomSheetModal} from '@gorhom/bottom-sheet';
 import {styles} from './style';
 import {Button} from 'react-native-paper';
+import CustomInput from '../../components/CustomInput';
 
 interface propsGroup {
   groupData: any;
@@ -24,7 +25,7 @@ const peopleDummyData = [{name: 'vishnu'}, {name: 'bhavya'}, {name: 'nadish'}];
 const currentUser = {name: 'vishnu'};
 
 const AddExpense = ({groupData}: propsGroup) => {
-  const {dismiss, dismissAll} = useBottomSheetModal();
+  const {dismissAll} = useBottomSheetModal();
 
   const [formData, setFormData] = useState<FormData>({
     title: '',
@@ -149,25 +150,26 @@ const AddExpense = ({groupData}: propsGroup) => {
 
   return (
     <View style={styles.container}>
-      <TextInput
+      <CustomInput
         placeholder="Amount"
-        value={formData.amount}
-        onChangeText={text => handleInputChange('amount', text)}
+        handleChange={text => handleInputChange('amount', text)}
         onBlur={handleBlur}
         keyboardType="numeric"
+        value={formData.amount}
+        warning={errors.amount}
       />
-      {errors.amount && <Text>{errors.amount}</Text>}
-      <TextInput
+      <CustomInput
         placeholder="Title"
+        handleChange={text => handleInputChange('title', text)}
         value={formData.title}
-        onChangeText={text => handleInputChange('title', text)}
+        warning={errors.title}
       />
-      {errors.title && <Text>{errors.title}</Text>}
-      <TextInput
+      <CustomInput
         placeholder="Description"
+        handleChange={text => handleInputChange('description', text)}
         value={formData.description}
-        onChangeText={text => handleInputChange('description', text)}
       />
+
       <View style={styles.inputContainer}>
         <SelectList
           setSelected={(val: any) => {

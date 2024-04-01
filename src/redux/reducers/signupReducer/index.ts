@@ -8,6 +8,7 @@ export interface stateType {
   currentUser: any;
   token: any;
   loginSuccess: boolean;
+  signUpSuccess: boolean;
 }
 
 const initialState: stateType = {
@@ -21,6 +22,7 @@ const initialState: stateType = {
   },
   token: null,
   loginSuccess: false,
+  signUpSuccess: false,
 };
 
 export const counterSlice = createSlice({
@@ -28,12 +30,10 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     onSigningUp: (state, action) => {
-      const randomIndex = Math.floor(Math.random() * imagePaths.length);
-      const newUser = {
-        ...action.payload,
-        imageUrl: imagePaths[randomIndex],
-      };
-      state.users = [...state.users, newUser];
+      console.log(state);
+    },
+    signedUp: (state, action) => {
+      state.signUpSuccess = action.payload.success;
     },
     loginReducer: (state, action) => {
       console.log(action.payload);

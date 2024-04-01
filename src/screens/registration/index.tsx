@@ -7,22 +7,22 @@ import {loginStyles} from '../login/style';
 import {onSigningUp} from '../../redux/reducers/signupReducer';
 import showToast from '../../components/Toast';
 import CustomInput from '../../components/CustomInput';
-import {validateEmail} from '../../utils/validationUtils';
+// import {validateEmail} from '../../utils/validationUtils';
 
 export interface FormValuesType {
-  first_name: string;
-  last_name: string;
+  username: string;
+  phone: string;
   email: string;
   password: string;
   confirmPassword: string;
 }
 const RegistrationScreen = ({navigation}: any) => {
-  const {users} = useAppSelector(state => state.users);
+  const {signUpSuccess} = useAppSelector(state => state.users);
   const dispatch = useAppDispatch();
 
   const [formValues, setFormValues] = useState<FormValuesType>({
-    first_name: '',
-    last_name: '',
+    username: '',
+    phone: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -56,28 +56,6 @@ const RegistrationScreen = ({navigation}: any) => {
     });
   };
 
-  const handleEmailBlur = () => {
-    // Validate email on blur
-    if (formValues.email && !validateEmail(formValues.email)) {
-      setFieldWarnings({
-        ...fieldWarnings,
-        email: 'Email is invalid',
-      });
-    } else if (
-      users.some((user: FormValuesType) => user.email === formValues.email)
-    ) {
-      setFieldWarnings({
-        ...fieldWarnings,
-        email: 'Email already in use',
-      });
-    } else {
-      setFieldWarnings({
-        ...fieldWarnings,
-        email: '',
-      });
-    }
-  };
-
   const handleSignIn = () => {
     const newFieldWarnings: Partial<FormValuesType> = {};
     Object.entries(formValues).forEach(([key, value]) => {
@@ -98,27 +76,30 @@ const RegistrationScreen = ({navigation}: any) => {
       return;
     }
     dispatch(onSigningUp(formValues));
-    showToast('Successfully registered');
-    navigation.navigate('Login');
+    if (signUpSuccess) {
+      showToast('Successfully registered');
+      navigation.navigate('Login');
+    }
   };
 
   return (
     <ImageBackground
-      source={require('../../assets/Images/background.jpg')}
-      style={loginStyles.backgroundImage}>
+      source={require('../../assets/Images/wallpaper.png')}
+      style={loginStyles.backgroundImage}
+      blurRadius={1}>
       <View style={loginStyles.container}>
         <View style={loginStyles.wrap}>
           <CustomInput
-            handleChange={text => handleInputChange('first_name', text)}
-            value={formValues.first_name}
-            placeholder="First Name"
-            warning={fieldWarnings.first_name}
+            handleChange={text => handleInputChange('username', text)}
+            value={formValues.username}
+            placeholder="Username"
+            warning={fieldWarnings.username}
           />
           <CustomInput
-            handleChange={text => handleInputChange('last_name', text)}
-            value={formValues.last_name}
-            placeholder="Last Name"
-            warning={fieldWarnings.last_name}
+            handleChange={text => handleInputChange('phone', text)}
+            value={formValues.phone}
+            placeholder="Phone"
+            warning={fieldWarnings.phone}
           />
           <CustomInput
             handleChange={text => handleInputChange('email', text)}
@@ -127,7 +108,6 @@ const RegistrationScreen = ({navigation}: any) => {
             placeholder="Email"
             warning={fieldWarnings.email}
             keyboardType="email-address"
-            onBlur={handleEmailBlur}
           />
           <CustomInput
             handleChange={text => handleInputChange('password', text)}

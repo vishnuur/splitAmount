@@ -1,5 +1,5 @@
 import {call, put, takeEvery, takeLatest} from 'redux-saga/effects';
-import {listGroups} from '../../../services/apis/groups';
+import {createGroup, listGroups} from '../../../services/apis/groups';
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* groupListSaga(action) {
@@ -13,8 +13,19 @@ function* groupListSaga(action) {
   }
 }
 
+function* createGroupSaga(action) {
+  try {
+    yield call(createGroup, action.payload);
+  } catch (er) {
+    console.log(er);
+  } finally {
+    yield call(listGroups);
+  }
+}
+
 function* groupSaga() {
   yield takeEvery('groups/getGroups', groupListSaga);
+  yield takeLatest('groups/createGroup', createGroupSaga);
 }
 
 export default groupSaga;

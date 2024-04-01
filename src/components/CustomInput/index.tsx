@@ -7,7 +7,7 @@ interface CustomInput {
   placeholder: string;
   handleChange: (value: string) => void;
   secureTextEntry?: boolean;
-  value: string;
+  value?: string;
   onSubmitEdit?: any;
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
   warning?: string;
@@ -27,7 +27,7 @@ const CustomInput = ({
   onBlur,
 }: CustomInput) => {
   return (
-    <View>
+    <View style={{width: '100%'}}>
       <TextInput
         style={loginStyles.input}
         placeholder={placeholder}
