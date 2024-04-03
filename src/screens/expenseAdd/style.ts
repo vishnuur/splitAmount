@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
   dropDownContainerStyle: {
     zIndex: 100,
     backgroundColor: 'white',
+    color:"black"
   },
   customButton: {
     padding: 12,

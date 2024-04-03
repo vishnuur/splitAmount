@@ -53,6 +53,10 @@ export const homeStyle = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
+  profileImage: {
+    width: 58,
+    height: 58,
+  },
   contentBg: {
     height: '100%',
     width: '100%',
@@ -71,9 +75,9 @@ export const homeStyle = StyleSheet.create({
     width: '100%',
   },
   section: {
-    padding: 24,
+    padding: 18,
     borderBottomColor: 'gray',
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
     width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
@@ -99,13 +103,22 @@ export const homeStyle = StyleSheet.create({
     width: '100%',
   },
   editButton: {paddingLeft: 12},
+  dateWrap: {
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: 8,
+  },
   registertime: {
     color: 'white',
     fontSize: 12,
     paddingTop: 4,
   },
+  registerDate: {
+    color: 'white',
+    fontSize: 16,
+    paddingTop: 4,
+  },
   datawrap: {
-    paddingLeft: 12,
     display: 'flex',
     justifyContent: 'space-around',
     flexDirection: 'row',

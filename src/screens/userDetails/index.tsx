@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
   FlatList,
+  Image,
   ImageBackground,
   Pressable,
   StyleSheet,
@@ -29,6 +30,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import AddExpense from '../expenseAdd';
 import LinearGradient from 'react-native-linear-gradient';
+import {expenseTypeImages} from '../../utils/getExpenseImage';
 
 interface UserData {
   text: string;
@@ -51,6 +53,7 @@ const UserDetails = ({route}: any) => {
     dispatch(getHistory(data.id));
   }, [data, dataAddedSuccess]);
 
+  console.log(history, 'historyhistory');
   const formatSplitText = (value: number) => {
     if (value < 0) {
       return {owe: true, text: `You owe ${Math.abs(value).toFixed(2)}`};
@@ -73,38 +76,45 @@ const UserDetails = ({route}: any) => {
     console.log('handleSheetChanges', index);
   }, []);
 
-  const renderItem = ({item}: FormValuesType | any) => (
-    <View key={item.title} style={homeStyle.editWrap}>
-      <View style={homeStyle.section}>
-        {/*<TouchableOpacity onPress={() => onPressImage(item)}>
-            <Image
-              style={homeStyle.profileImage}
-              source={{uri: item?.imageUrl}}
-            />
+  const renderItem = ({item}: FormValuesType | any) => {
+    const imageSource = expenseTypeImages[item?.expenseType]; // Use function if available, otherwise use direct access
+    console.log(imageSource, 'imageSourceimageSource');
+
+    return (
+      <View key={item._id} style={homeStyle.editWrap}>
+        <View style={homeStyle.section}>
+          {/*<TouchableOpacity onPress={() => onPressImage(item)}>
           </TouchableOpacity>*/}
 
-        <View style={homeStyle.datawrap}>
-          <Text style={homeStyle.registertime}>
-            {moment(item.date).format('DD MMM')}
-          </Text>
-          <View style={homeStyle.contentWrap}>
-            <Text style={homeStyle.name}>{item.title}</Text>
-            <Text style={homeStyle.payedBy}>
-              {item.amount} Payed by {item.payedBy}
-            </Text>
+          <View style={homeStyle.datawrap}>
+            <Image style={homeStyle.profileImage} source={imageSource} />
+            <View style={homeStyle.dateWrap}>
+              <Text style={homeStyle.registerDate}>
+                {moment(item.date).format('DD')}
+              </Text>
+              <Text style={homeStyle.registertime}>
+                {moment(item.date).format('MMM')}
+              </Text>
+            </View>
+            <View style={homeStyle.contentWrap}>
+              <Text style={homeStyle.name}>{item.title}</Text>
+              <Text style={homeStyle.payedBy}>
+                {item.amount} Payed by {item.payedBy}
+              </Text>
+            </View>
           </View>
+          <Text
+            style={
+              formatSplitText(item[currentUser.name]).owe
+                ? homeStyle.splitValueOwe
+                : homeStyle.splitValue
+            }>
+            {formatSplitText(item[currentUser.name]).text}
+          </Text>
         </View>
-        <Text
-          style={
-            formatSplitText(item[currentUser.name]).owe
-              ? homeStyle.splitValueOwe
-              : homeStyle.splitValue
-          }>
-          {formatSplitText(item[currentUser.name]).text}
-        </Text>
       </View>
-    </View>
-  );
+    );
+  };
 
   const calculateVishnuSum = () => {
     let totalVishnu = 0;

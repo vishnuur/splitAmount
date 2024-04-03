@@ -16,13 +16,13 @@ const DropdownComponent = ({data, placeholder, handleChange, value}) => {
       maxHeight={200}
       value={value}
       data={data}
-      valueField="_id"
+      valueField="title"
       labelField="title"
       imageField="image"
       placeholder={placeholder}
       onChange={e => {
-        handleChange(e._id);
-        setCountry(e._id);
+        handleChange(e.title);
+        setCountry(e.title);
       }}
     />
   );
@@ -32,10 +32,12 @@ export default DropdownComponent;
 
 const styles = StyleSheet.create({
   dropdown: {
-    margin: 16,
-    height: 50,
-    borderBottomColor: 'gray',
-    borderBottomWidth: 0.5,
+    height: 40,
+    borderColor: '#12D4B4',
+    borderWidth: 1,
+    borderRadius: 13,
+    marginTop: 12,
+    padding: 12,
   },
   imageStyle: {
     width: 32,
@@ -43,17 +45,20 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
+    color: 'grey',
   },
   selectedTextStyle: {
     fontSize: 16,
     marginLeft: 8,
+    color: 'grey',
   },
   iconStyle: {
-    width: 20,
-    height: 20,
+    width: 32,
+    height: 32,
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+    color: 'grey',
   },
 });

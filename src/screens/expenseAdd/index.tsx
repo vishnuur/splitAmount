@@ -88,6 +88,7 @@ const AddExpense = ({groupData}: propsGroup) => {
         ...formData,
         ...moneySplitedData,
         date: new Date().toISOString(),
+        expenseType: selectedType,
       };
       const payload = {
         newData,
@@ -217,12 +218,14 @@ const AddExpense = ({groupData}: propsGroup) => {
           save="value"
           boxStyles={styles.dropDownBoxStyle}
           dropdownStyles={styles.dropDownContainerStyle}
+          dropdownTextStyles={{color: 'black'}}
+          inputStyles={{color: 'black'}}
         />
-        <Text>OR</Text>
+        <Text style={{color: 'black'}}>OR</Text>
         <TouchableOpacity
           onPress={() => setcustomModalvisible(true)}
           style={styles.customButton}>
-          <Text>Use Custom</Text>
+          <Text style={{color: 'black'}}>Use Custom</Text>
         </TouchableOpacity>
       </View>
       <Button

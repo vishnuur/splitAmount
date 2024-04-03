@@ -13,7 +13,7 @@ export const historyList = async (payload: any) => {
 export const savePaymentData = async (payload: any) => {
   try {
     const result = await post(
-      `/api/groups/${payload.id}/payments`,
+      `/api/expense/${payload.id}/createExpense`,
       payload.newData,
     );
     return result.success;
@@ -24,8 +24,8 @@ export const savePaymentData = async (payload: any) => {
 
 export const getGroupPaymentData = async (payload: any) => {
   try {
-    const result = await get(`/api/groups/${payload}`);
-    return result.payments;
+    const result = await get(`/api/expense/${payload}/getexpenses`);
+    return result;
   } catch (er) {
     console.log(er);
   }
