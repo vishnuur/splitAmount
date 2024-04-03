@@ -97,9 +97,9 @@ const HomeScreen = ({navigation}: any) => {
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
+  // const handleSheetChanges = useCallback((index: number) => {
+  //   console.log('handleSheetChanges', index);
+  // }, []);
 
   const renderItem = ({item}: FormValuesType | any) => {
     const randomImage = getRandomImage();
@@ -184,7 +184,7 @@ const HomeScreen = ({navigation}: any) => {
           ref={bottomSheetModalRef}
           index={1}
           snapPoints={snapPoints}
-          onChange={handleSheetChanges}
+          // onChange={handleSheetChanges}
           contentHeight={360}>
           <BottomSheetView style={homeStyle.groupCreateContainer}>
             <CreateGroup onSave={saveGroupNameFn} />

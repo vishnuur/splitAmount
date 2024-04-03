@@ -53,7 +53,6 @@ const UserDetails = ({route}: any) => {
     dispatch(getHistory(data.id));
   }, [data, dataAddedSuccess]);
 
-  console.log(history, 'historyhistory');
   const formatSplitText = (value: number) => {
     if (value < 0) {
       return {owe: true, text: `You owe ${Math.abs(value).toFixed(2)}`};
@@ -72,13 +71,9 @@ const UserDetails = ({route}: any) => {
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-  }, []);
 
   const renderItem = ({item}: FormValuesType | any) => {
     const imageSource = expenseTypeImages[item?.expenseType]; // Use function if available, otherwise use direct access
-    console.log(imageSource, 'imageSourceimageSource');
 
     return (
       <View key={item._id} style={homeStyle.editWrap}>
@@ -171,7 +166,6 @@ const UserDetails = ({route}: any) => {
         ref={bottomSheetModalRef}
         index={1}
         snapPoints={snapPoints}
-        onChange={handleSheetChanges}
         contentHeight={360}>
         <BottomSheetView style={styles.contentContainer}>
           <AddExpense groupData={data} />

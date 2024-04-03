@@ -13,7 +13,7 @@ export const groupSlice = createSlice({
   initialState,
   reducers: {
     getExpenseTypes: (state, action) => {
-      console.log(state, 'getexpensetypess');
+      console.log(state);
     },
     saveExpenseTypes: (state, action) => {
       state.expenseTypes = action.payload;

@@ -23,6 +23,7 @@ function* savePaymentSaga(action) {
   } catch (e) {
     yield put({type: 'USER_FETCH_FAILED', message: e.message});
   } finally {
+    yield put({type: 'history/getHistory', payload: action?.payload?.id});
     yield put({type: 'history/dataAddedStatus', payload: result});
   }
 }
