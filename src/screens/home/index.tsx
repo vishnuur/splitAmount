@@ -29,9 +29,12 @@ import {
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import {getUserId} from '../../utils/userDataUtils';
+import Loader from '../../components/Loader';
 
 const HomeScreen = ({navigation}: any) => {
   const {currentUser, token} = useAppSelector(state => state.users);
+  const {isLoading} = useAppSelector(state => state.general);
+
   const {groups} = useAppSelector(state => state.groups);
   const [visible, setVisible] = useState(false);
   const [selectedImage, setselectedImage] = useState('');
@@ -168,6 +171,7 @@ const HomeScreen = ({navigation}: any) => {
         </View>
 
         <View style={homeStyle.detailWrap}>
+          {isLoading && <Loader />}
           <FlatList
             data={groups}
             renderItem={renderItem}

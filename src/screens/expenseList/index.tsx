@@ -31,6 +31,7 @@ import {
 import AddExpense from '../expenseAdd';
 import LinearGradient from 'react-native-linear-gradient';
 import {expenseTypeImages} from '../../utils/getExpenseImage';
+import Loader from '../../components/Loader';
 
 interface UserData {
   text: string;
@@ -45,6 +46,7 @@ interface editInterface {
 const UserDetails = ({route}: any) => {
   const dispatch = useAppDispatch();
   const {history, dataAddedSuccess} = useAppSelector(state => state.history);
+  const {isLoading} = useAppSelector(state => state.general);
   const data = route.params;
   const navigation = useNavigation();
   const currentUser = {name: 'vishnu'};
@@ -74,7 +76,6 @@ const UserDetails = ({route}: any) => {
 
   const renderItem = ({item}: FormValuesType | any) => {
     const imageSource = expenseTypeImages[item?.expenseType]; // Use function if available, otherwise use direct access
-
     return (
       <View key={item._id} style={homeStyle.editWrap}>
         <View style={homeStyle.section}>
@@ -150,6 +151,7 @@ const UserDetails = ({route}: any) => {
             </Button>
           </LinearGradient>
         </View>
+        {isLoading && <Loader />}
         <FlatList
           data={history}
           renderItem={renderItem}

@@ -7,7 +7,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import {StackNavigator, AuthNavigator} from './StackNavigator';
 import DrawerMenu from '../components/Hamburger';
-import UserDetails from '../screens/userDetails';
+import UserDetails from '../screens/expenseList';
 import imagePaths from '../constants/images';
 import CustomIcon from '../components/customIcons';
 import {useAppSelector} from '../redux/hooks';

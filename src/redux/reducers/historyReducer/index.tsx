@@ -4,12 +4,14 @@ export interface stateType {
   history: any;
   groupDetails: any;
   dataAddedSuccess: boolean;
+  basicChart: any;
 }
 
 const initialState: stateType = {
   history: [],
   groupDetails: [],
   dataAddedSuccess: false,
+  basicChart: [],
 };
 
 export const historySlice = createSlice({
@@ -31,11 +33,23 @@ export const historySlice = createSlice({
     clearAddedData: (state, action) => {
       state.history = [];
     },
+    getBasicChartData: (state, action) => {
+      console.log(state);
+    },
+    saveBasicChartData: (state, action) => {
+      state.basicChart = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const {saveAddedData, clearAddedData, getHistory, saveHistory} =
-  historySlice.actions;
+export const {
+  saveAddedData,
+  clearAddedData,
+  getHistory,
+  saveHistory,
+  getBasicChartData,
+  saveBasicChartData,
+} = historySlice.actions;
 
 export default historySlice.reducer;

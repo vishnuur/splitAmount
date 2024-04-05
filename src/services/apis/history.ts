@@ -30,3 +30,12 @@ export const getGroupPaymentData = async (payload: any) => {
     console.log(er);
   }
 };
+
+export const getBasicChartData = async (payload: any) => {
+  try {
+    const result = await get(`/api/expenseChartBar/${payload}`);
+    return result;
+  } catch (er) {
+    console.log(er);
+  }
+};

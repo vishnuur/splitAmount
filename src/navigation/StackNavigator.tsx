@@ -8,8 +8,10 @@ import HomeScreen from '../screens/home';
 import LoginScreen from '../screens/login';
 import RegistrationScreen from '../screens/registration';
 import CustomIcon from '../components/CustomIcons';
-import UserDetails from '../screens/userDetails';
+import UserDetails from '../screens/expenseList';
 import imagePaths from '../constants/images';
+import ExpenseChart from '../screens/charts/basicExpenseChart';
+import DetailedChart from '../screens/charts/detailedPieChart';
 
 const Stack = createStackNavigator();
 
@@ -54,19 +56,79 @@ const StackNavigator = ({navigation}: any) => (
           headerTitleStyle: {
             fontWeight: 'bold',
           },
-          headerTitle: () => (
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              <Image
-                source={{
-                  uri: (route.params as any)?.imageUrl ?? imagePaths[0],
-                }}
-                style={styles.headerImage}
-              />
-              <Text style={{color: 'white', fontSize: 18}}>
-                {(route.params as any).title || 'User name'}
-              </Text>
-            </View>
+          headerTitle: params => {
+            console.log(route.params, 'paramssss');
+            return (
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('Charts', route.params.id);
+                  }}>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Image
+                      source={{
+                        uri: (route.params as any)?.imageUrl ?? imagePaths[0],
+                      }}
+                      style={styles.headerImage}
+                    />
+                    <Text style={{color: 'white', fontSize: 18}}>
+                      {(route.params as any).title || 'User name'}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            );
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={{marginLeft: 16}}>
+              <CustomIcon>
+                <MaterialIcon name="arrow-back" />
+              </CustomIcon>
+            </TouchableOpacity>
           ),
+        };
+      }}
+    />
+    <Stack.Screen
+      name="Charts"
+      component={ExpenseChart}
+      options={() => {
+        return {
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: 'transparent',
+          },
+          headerTransparent: true,
+          headerTitle: '',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={{marginLeft: 16}}>
+              <CustomIcon>
+                <MaterialIcon name="arrow-back" />
+              </CustomIcon>
+            </TouchableOpacity>
+          ),
+        };
+      }}
+    />
+    <Stack.Screen
+      name="DetailedCharts"
+      component={DetailedChart}
+      options={() => {
+        return {
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: 'transparent',
+          },
+          headerTransparent: true,
+          headerTitle: '',
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => {
