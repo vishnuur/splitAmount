@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {View, TextInput, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  TextInput,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import {getHistory, saveAddedData} from '../../redux/reducers/historyReducer';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 import {useNavigation} from '@react-navigation/native';
@@ -12,6 +18,7 @@ import {Button} from 'react-native-paper';
 import CustomInput from '../../components/CustomInput';
 import {getExpenseTypes} from '../../redux/reducers/generalReducer';
 import DropdownComponent from '../../components/CustomDropDown';
+import {Dropdown} from 'react-native-element-dropdown';
 
 interface propsGroup {
   groupData: any;
@@ -22,24 +29,19 @@ interface FormData {
   amount: string;
 }
 
-const peopleDummyData = [{name: 'vishnu'}, {name: 'bhavya'}, {name: 'nadish'}];
-
-const currentUser = {name: 'vishnu'};
-
 const AddExpense = ({groupData}: propsGroup) => {
   const {dismissAll} = useBottomSheetModal();
   const {expenseTypes} = useAppSelector(state => state.general);
+  const {currentUser} = useAppSelector(state => state.users);
 
   const [formData, setFormData] = useState<FormData>({
     title: '',
     description: '',
     amount: '',
   });
-  const [selectedValue, setselectedValue] = useState(
-    'Payed by you, split half',
-  ) as any;
+  const [selectedValue, setselectedValue] = useState() as any;
   const [customModalvisible, setcustomModalvisible] = useState(false);
-  const initialSliderValues = peopleDummyData.map(() => 0);
+  const initialSliderValues = groupData?.users.map(() => 0);
   const [values, setValues] = useState(initialSliderValues);
   const [moneySplit, setmoneySplit] = useState({});
   const [expenseTypesArray, setexpenseTypesArray] = useState([]);
@@ -89,10 +91,11 @@ const AddExpense = ({groupData}: propsGroup) => {
         ...moneySplitedData,
         date: new Date().toISOString(),
         expenseType: selectedType,
+        settleUp: false,
       };
       const payload = {
         newData,
-        id: groupData.id,
+        id: groupData._id,
       };
       dispatch(saveAddedData(payload));
       dismissAll();
@@ -100,59 +103,60 @@ const AddExpense = ({groupData}: propsGroup) => {
   };
   const getCalculatedSplit = () => {
     let result = 0;
-    result = parseInt(formData.amount) / peopleDummyData.length;
-    let payedBy = '';
+    result = parseInt(formData.amount) / groupData?.users.length;
+    const payedBy = {
+      name:
+        selectedValue.userId === currentUser._id
+          ? currentUser.username
+          : selectedValue.user,
+      id: selectedValue.userId,
+    };
     const group: any = {};
-    peopleDummyData.forEach(res => {
-      if (selectedValue === 1) {
-        group[currentUser.name] = result;
-        group[res.name] = 0 - result;
-        payedBy = currentUser.name;
+    groupData?.users.forEach((res: any) => {
+      if (selectedValue.splitMethod === 1) {
+        if (selectedValue.userId === res.id) {
+          group[res.name] = result;
+        } else {
+          group[res.name] = 0 - result;
+        }
       } else {
-        if (selectedValue.includes('split half')) {
-          if (
-            selectedValue.includes(res.name) ||
-            selectedValue.includes(currentUser.name)
-          ) {
-            group[res.name] = result;
-            payedBy = res.name;
-          } else {
-            group[res.name] = 0 - result;
-          }
-        } else if (selectedValue.includes('owes full')) {
-          if (
-            selectedValue.includes(res.name) ||
-            selectedValue.includes(currentUser.name)
-          ) {
-            group[res.name] = formData.amount;
-            payedBy = res.name;
-          } else {
-            group[res.name] =
-              0 - parseInt(formData.amount) / (peopleDummyData.length - 1);
-          }
+        if (selectedValue.userId === res.id) {
+          group[res.name] = formData.amount;
+        } else {
+          group[res.name] =
+            0 - parseInt(formData.amount) / (groupData?.users.length - 1);
         }
       }
     });
+
     const payload = {...group, payedBy};
-    console.log(payload, 'checkboth');
     setmoneySplit(payload);
     return payload;
   };
 
   const options = [];
 
-  peopleDummyData.forEach(person => {
-    const name = person.name === currentUser.name ? 'You' : person.name;
+  groupData?.users.forEach((person: any) => {
+    const name =
+      person.name === currentUser.username
+        ? 'You'
+        : person.name.charAt(0).toUpperCase() + person.name.slice(1);
 
     options.push({
       key: options.length + 1,
       value: `Payed by ${name}, split half`,
+      user: name,
+      userId: person.id,
+      splitMethod: 1,
     });
 
     if (name !== 'You') {
       options.push({
         key: options.length + 1,
         value: `${name} owes full`,
+        user: name,
+        userId: person.id,
+        splitMethod: 2,
       });
     }
   });
@@ -160,6 +164,9 @@ const AddExpense = ({groupData}: propsGroup) => {
   options.push({
     key: options.length + 1,
     value: `You owe full`,
+    user: currentUser.username,
+    userId: currentUser._id,
+    splitMethod: 2,
   });
 
   const imageMap: any = {
@@ -208,19 +215,28 @@ const AddExpense = ({groupData}: propsGroup) => {
           value={selectedType}
         />
       )}
+
       <View style={styles.inputContainer}>
-        <SelectList
-          setSelected={(val: any) => {
-            setselectedValue(val);
-          }}
-          defaultOption={{key: 1, value: 'Payed by you, split half'}}
-          data={options}
-          save="value"
-          boxStyles={styles.dropDownBoxStyle}
-          dropdownStyles={styles.dropDownContainerStyle}
-          dropdownTextStyles={{color: 'black'}}
-          inputStyles={{color: 'black'}}
-        />
+        {options?.length && (
+          <Dropdown
+            style={[styles2.dropdown]}
+            placeholderStyle={styles2.placeholderStyle}
+            selectedTextStyle={styles2.selectedTextStyle}
+            inputSearchStyle={styles2.inputSearchStyle}
+            iconStyle={styles2.iconStyle}
+            itemTextStyle={{color: 'black'}}
+            data={options && options}
+            maxHeight={300}
+            labelField="value"
+            valueField="key"
+            placeholder={'Select item'}
+            searchPlaceholder="Search..."
+            value={selectedValue}
+            onChange={item => {
+              setselectedValue(item);
+            }}
+          />
+        )}
         <Text style={{color: 'black'}}>OR</Text>
         <TouchableOpacity
           onPress={() => setcustomModalvisible(true)}
@@ -254,3 +270,52 @@ const AddExpense = ({groupData}: propsGroup) => {
 };
 
 export default AddExpense;
+
+const styles2 = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    padding: 16,
+  },
+  dropdown: {
+    height: 50,
+    paddingHorizontal: 8,
+    padding: 12,
+    borderRadius: 12,
+    marginBottom: 12,
+    marginTop: 12,
+    borderWidth: 1,
+    borderColor: 'gray',
+    width: '80%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  icon: {
+    marginRight: 5,
+  },
+  label: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
+  },
+  placeholderStyle: {
+    fontSize: 16,
+    color: 'black',
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    color: 'black',
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+});

@@ -39,9 +39,10 @@ export const counterSlice = createSlice({
       console.log(action.payload);
     },
     saveLoginDetails: (state, action) => {
+      console.log(action.payload, 'payloadvaluelogin');
       state.loginSuccess = action.payload.success;
       state.token = action.payload.token;
-      state.currentUser = action.payload.username;
+      state.currentUser = action.payload.user;
     },
     setCurrentUser: (state, action) => {
       state.currentUser = action.payload;

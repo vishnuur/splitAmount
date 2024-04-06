@@ -13,6 +13,8 @@ interface CustomInput {
   warning?: string;
   keyboardType?: KeyboardTypeOptions;
   onBlur?: () => void;
+  customStyle?: any;
+  defaultValue?: any;
 }
 
 const CustomInput = ({
@@ -25,11 +27,13 @@ const CustomInput = ({
   warning,
   keyboardType,
   onBlur,
+  customStyle,
+  defaultValue,
 }: CustomInput) => {
   return (
-    <View style={{width: '100%'}}>
+    <>
       <TextInput
-        style={loginStyles.input}
+        style={[loginStyles.input, customStyle]}
         placeholder={placeholder}
         placeholderTextColor="grey"
         secureTextEntry={secureTextEntry}
@@ -39,9 +43,10 @@ const CustomInput = ({
         onSubmitEditing={onSubmitEdit}
         keyboardType={keyboardType}
         onBlur={onBlur}
+        defaultValue={defaultValue}
       />
       {warning && <Text style={loginStyles.warning}>{warning}</Text>}
-    </View>
+    </>
   );
 };
 export default CustomInput;

@@ -32,7 +32,7 @@ import {getUserId} from '../../utils/userDataUtils';
 import Loader from '../../components/Loader';
 
 const HomeScreen = ({navigation}: any) => {
-  const {currentUser, token} = useAppSelector(state => state.users);
+  const {currentUser} = useAppSelector(state => state.users);
   const {isLoading} = useAppSelector(state => state.general);
 
   const {groups} = useAppSelector(state => state.groups);
@@ -130,12 +130,11 @@ const HomeScreen = ({navigation}: any) => {
       </Pressable>
     );
   };
-
   return (
     <BottomSheetModalProvider>
       <View style={homeStyle.container}>
         <View style={homeStyle.imageWrap}>
-          <Text style={homeStyle.heading}>Hi, {currentUser}!</Text>
+          <Text style={homeStyle.heading}>Hi, {currentUser?.username}!</Text>
         </View>
         <View style={homeStyle.carouselWrap}>
           <Carousel
@@ -171,7 +170,7 @@ const HomeScreen = ({navigation}: any) => {
         </View>
 
         <View style={homeStyle.detailWrap}>
-          {isLoading && <Loader />}
+          {/* {isLoading && <Loader />} */}
           <FlatList
             data={groups}
             renderItem={renderItem}

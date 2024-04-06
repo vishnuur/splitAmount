@@ -18,3 +18,12 @@ export const listGroups = async () => {
     return er;
   }
 };
+
+export const getGroupDetail = async (id: any) => {
+  try {
+    const result: any = await get(`api/groups/${id}`);
+    return result;
+  } catch (er) {
+    console.log(er);
+  }
+};

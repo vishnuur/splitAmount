@@ -2,10 +2,12 @@ import {createSlice} from '@reduxjs/toolkit';
 
 export interface stateType {
   groups: any;
+  groupData: any;
 }
 
 const initialState: stateType = {
   groups: [],
+  groupData: {},
 };
 
 export const groupSlice = createSlice({
@@ -21,10 +23,22 @@ export const groupSlice = createSlice({
     createGroup: (state, action) => {
       console.log(state);
     },
+    getSingleGroupData: (state, action) => {
+      console.log(action);
+    },
+    saveSingleGroupData: (state, action) => {
+      state.groupData = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const {getGroups, saveGroupData, createGroup} = groupSlice.actions;
+export const {
+  getGroups,
+  saveGroupData,
+  createGroup,
+  getSingleGroupData,
+  saveSingleGroupData,
+} = groupSlice.actions;
 
 export default groupSlice.reducer;

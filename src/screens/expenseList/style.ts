@@ -106,16 +106,16 @@ export const homeStyle = StyleSheet.create({
   dateWrap: {
     display: 'flex',
     alignItems: 'center',
-    paddingLeft: 8,
+    paddingRight: 8,
   },
   registertime: {
     color: 'white',
-    fontSize: 12,
+    fontSize: 14,
     paddingTop: 4,
   },
   registerDate: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 18,
     paddingTop: 4,
   },
   datawrap: {
@@ -152,5 +152,10 @@ export const homeStyle = StyleSheet.create({
     margin: 16,
     right: 0,
     bottom: 0,
+  },
+  settleUPCover: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

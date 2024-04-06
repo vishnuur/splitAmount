@@ -153,7 +153,6 @@ export const homeStyle = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     // Elevation for Android
-    elevation: 4,
   },
   groupCreateContainer: {
     padding: 24,

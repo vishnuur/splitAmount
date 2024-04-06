@@ -11,6 +11,7 @@ function* loginUserSaga(action) {
   } catch (e) {
     yield put({type: 'USER_FETCH_FAILED', message: e.message});
   } finally {
+    console.log(result, 'resulttsss');
     yield put({type: 'counter/saveLoginDetails', payload: result});
   }
 }

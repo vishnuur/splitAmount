@@ -8,5 +8,6 @@ export const style = StyleSheet.create({
     height: 200,
     display: 'flex',
     justifyContent: 'space-between',
+    padding: 24,
   },
 });

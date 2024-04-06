@@ -11,13 +11,16 @@ export const historyList = async (payload: any) => {
 };
 
 export const savePaymentData = async (payload: any) => {
+  console.log(payload, 'payloaddata');
   try {
     const result = await post(
       `/api/expense/${payload.id}/createExpense`,
       payload.newData,
     );
+    console.log(result, 'result');
     return result.success;
   } catch (er) {
+    console.log(er, 'error');
     console.log(er);
   }
 };
